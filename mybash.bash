@@ -37,6 +37,9 @@ alias mv='mv -i'
 # add autocompletion to the sudo command
 complete -cf sudo
 
+# ignore commands that start with space and duplicates
+export HISTCONTROL=ignoreboth
+
 # add the color aliases
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
