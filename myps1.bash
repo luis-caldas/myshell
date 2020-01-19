@@ -110,8 +110,14 @@ INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$JOBS_INFO $HISTORY_CO
 # build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLORS[7]}>${COLORS[10]} "
 
+# command line for ps2
+COMMAND_LINE_PS2="${COLORS[7]}  >${COLORS[10]} "
+
 # the save the success code
 PROMPT_COMMAND="SUCCESS_CODE=\$?"
 
 # final ps1 assignment
 PS1="$INFORMATION_LINE\n$COMMAND_LINE"
+
+# assign ps2 as well while we're at it
+PS2="$COMMAND_LINE_PS2"
