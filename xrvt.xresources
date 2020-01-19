@@ -1,5 +1,6 @@
 ! Set the terminal font to the preferred monospace
 URxvt.font: xft:mono:size=9
+URxvt.letterSpace: 0
 
 ! Remove the scroll bar
 URxvt.scrollBar: false
@@ -10,12 +11,12 @@ URxvt*foreground: White
 
 ! Set the background to be transparent
 URxvt.depth:32
-URxvt.background:rgba:0000/0000/0000/dddd
+URxvt.background:rgba:0d00/0d00/0d00/e000
 
 ! Changing the palette
-*.foreground: #93a1a1
-*.background: #141c21
-*.cursorColor: #afbfbf
+!*.foreground: #ffffff
+!*.background: #202020
+!*.cursorColor: #ffffff
 ! --- black
 *.color0: #000000
 *.color8: #555555
