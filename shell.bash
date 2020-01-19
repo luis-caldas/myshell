@@ -3,7 +3,7 @@
 # simple bash script that activates tmux, color and my ps1 line
 
 # function that finds the folder in which the script executing it is located
-get_folder() {
+function get_folder() {
 
     # get the folder in which the script is located
     SOURCE="${BASH_SOURCE[0]}"
@@ -26,6 +26,39 @@ get_folder() {
     # return the directory
     echo "$DIR"
 }
+
+function check_tmux() {
+
+    # check if we are not inside a tmux session, or if we dont want a tmux session
+    [[ $TERM != "screen"* ]] && [[ $TERM != "tmux"* ]] && [[ $TMUX_START == true ]] && return 1
+
+    # if reached here we are
+    return 0
+
+}
+
+function start_tmux() {
+
+    # start tmux with the given configs
+    tmux -f <(cat "$1/tmux.conf" ; echo "source-file \"$1/gray.tmuxtheme\"")
+
+}
+
+# get directory in which this script is running
+DIRECTORY_NOW=$(get_folder)
+
+# start tmux of not on ssh and if the variable TMUX_START is set and true
+# the command to start the terminal must set the variable needed to true example
+# bash -c 'export TMUX_START=true; {terminal of choice}'
+if ! check_tmux; then
+
+    # if we are not in a tmux session and want one, start it
+    start_tmux "$DIRECTORY_NOW"
+
+    # exit when tmux ends, no need to rerun code
+    exit
+
+fi
 
 # aliases to my preferred configurations
 alias clear_history='history -c; history -w'
@@ -52,13 +85,6 @@ if [ -f "/etc/bash_completion.d/git-prompt" ]; then
 	source "/etc/bash_completion.d/git-prompt"
 fi
 
-# get the folder of this script
-DIRECTORY_NOW=$(get_folder)
-
-# start tmux of not on ssh and if the variable TMUX_START is set and true
-# the command to start the terminal must set the variable needed to true example
-# bash -c 'export TMUX_START=true; {terminal of choice}'
-[[ $TERM != "screen" ]]  && [[ $TMUX_START == true ]] && exec tmux -f <(cat "$DIRECTORY_NOW/tmux.conf" ; echo "source-file \"$DIRECTORY_NOW/gray.tmuxtheme\"")
-
 # source the ps1 file that is contained in the same folder
-source "$DIRECTORY_NOW/psline.bash"
+source "$DIRECTORY_NOW""/psline.bash"
+
