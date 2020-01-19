@@ -13,6 +13,14 @@ URxvt*foreground: White
 URxvt.depth:32
 URxvt.background:rgba:0d00/0d00/0d00/e000
 
+! Configure the keybidings for copy and paste
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Meta-c: builtin-string:
+URxvt.keysym.Control-Meta-v: builtin-string:
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+
 ! Changing the palette
 !*.foreground: #ffffff
 !*.background: #202020
