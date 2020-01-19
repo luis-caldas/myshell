@@ -61,4 +61,4 @@ DIRECTORY_NOW=$(get_folder)
 [[ $TERM != "screen" ]]  && [[ $TMUX_START == true ]] && exec tmux -f <(cat "$DIRECTORY_NOW/tmux.conf" ; echo "source-file \"$DIRECTORY_NOW/gray.tmuxtheme\"")
 
 # source the ps1 file that is contained in the same folder
-source "$DIRECTORY_NOW/myps1.bash"
+source "$DIRECTORY_NOW/psline.bash"

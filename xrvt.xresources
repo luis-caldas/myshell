@@ -1,0 +1,43 @@
+! Set the terminal font to the preferred monospace
+URxvt.font: xft:mono:size=9
+
+! Remove the scroll bar
+URxvt.scrollBar: false
+
+! Invert the background colors
+URxvt*background: Black
+URxvt*foreground: White
+
+! Set the background to be transparent
+URxvt.depth:32
+URxvt.background:rgba:0000/0000/0000/dddd
+
+! Changing the palette
+*.foreground: #93a1a1
+*.background: #141c21
+*.cursorColor: #afbfbf
+! --- black
+*.color0: #000000
+*.color8: #555555
+! --- red
+*.color1: #97325b
+*.color9: #95043f
+! --- green
+*.color2: #4f823f
+*.color10: #3b931f
+! --- yellow
+*.color3: #ba7730
+*.color11: #cf6f08
+! --- blue
+*.color4: #49669f
+*.color12: #214fa8
+! --- magenta
+*.color5: #814ca1
+*.color13: #6f249d
+! --- cyan
+*.color6: #b962ca
+*.color14: #de3ba0
+! --- white
+*.color7: #aaaaaa
+*.color15: #ffffff
+

@@ -1,5 +1,13 @@
-# My simple Bash PS1
+# My simple shell configs
 
-Simple bash ps1 that contains all the information that I need and is organized to my liking.
+Contains configs for the Bash, Xrvt-Unicode, PS lines and TMUX.
 
-Also contains a tmux file for the tmux of my liking.
+### Installation
+
+##### Bash, TMUX and PS
+
+Source the `shell.bash` file to your `.bashrc`
+
+##### Xrvt-Unicode
+
+Include the path to `xrvt.xresources` to your `.Xresources` file
