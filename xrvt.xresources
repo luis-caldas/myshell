@@ -11,7 +11,7 @@ URxvt*foreground: White
 
 ! Set the background to be transparent
 URxvt.depth:32
-URxvt.background:rgba:0d00/0d00/0d00/e000
+URxvt.background:rgba:0d00/0d00/0d00/f500
 
 ! Configure the keybidings for copy and paste
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
