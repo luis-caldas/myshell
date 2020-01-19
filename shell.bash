@@ -32,7 +32,7 @@ function check_tmux() {
     # check if we are not inside a tmux session, or if we dont want a tmux session
     [[ $TERM != "screen"* ]] && [[ $TERM != "tmux"* ]] && [[ $TMUX_START == true ]] && return 1
 
-    # if reached here we are
+    # if reached here we are in a tmux session
     return 0
 
 }
