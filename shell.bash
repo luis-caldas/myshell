@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# simple bash script that activates tmux, color and my ps1 line
+# My Shell
+
+#############
+# Functions #
+#############
 
 # function that finds the folder in which the script executing it is located
 function get_folder() {
@@ -27,10 +31,33 @@ function get_folder() {
     echo "$DIR"
 }
 
+# extract the supported number of colors from the terminal
+function number_colors() {
+
+    tput colors
+
+}
+
+function tmux_version() {
+
+    # extract tmux version number
+    tmux -V | grep -Po '(?<=tmux )[^a-zA-Z]+[a-zA-Z]?'
+
+}
+
+function tmux_newest() {
+
+    [  "$1" = "$(echo -e "$1\n$2" | sort -V | head -n1)" ]
+
+}
+
 function check_tmux() {
 
+    # reassing argument names
+    should_tmux_start="$1"
+
     # check if we are not inside a tmux session, or if we dont want a tmux session
-    [[ $TERM != "screen"* ]] && [[ $TERM != "tmux"* ]] && [[ $TMUX_START == true ]] && return 1
+    [[ $TERM != "screen"* ]] && [[ $TERM != "tmux"* ]] && [[ $should_tmux_start == true ]] && return 1
 
     # if reached here we are in a tmux session
     return 0
@@ -39,52 +66,55 @@ function check_tmux() {
 
 function start_tmux() {
 
-    # start tmux with the given configs
-    tmux -f <(cat "$1/tmux.conf" ; echo "source-file \"$1/gray.tmuxtheme\"")
+    # translate argument name
+    dir_now="$1"
+    colors_now="$2"
+    is_unicode="$3"
+    is_newest="$4"
+
+    # start tmux with the generated configs
+    tmux -f <(cat "$dir_now/tmux.conf" ; bash "$dir_now""/generate-theme.bash" "$colors_now" "$is_unicode" "$is_newest")
 
 }
+
+#############
+# Scripting #
+#############
 
 # get directory in which this script is running
 DIRECTORY_NOW=$(get_folder)
 
-# start tmux of not on ssh and if the variable TMUX_START is set and true
-# the command to start the terminal must set the variable needed to true example
-# bash -c 'export TMUX_START=true; {terminal of choice}'
-if ! check_tmux; then
+# check if tmux has been started and start it if not
+if ! check_tmux "$TMUX_START"; then
+
+    # get the number of colors of this instance
+    colors_now=$(number_colors)
+
+    # check if the colors has been forced
+    if [ "$FORCE_COLORS" != "" ]; then
+        colors_now="$FORCE_COLORS"
+    fi
+
+    echo $colors_now
+    read
+
+    # extract the tmux version
+    tmux_version=$(tmux_version)
+
+    # check if tmux uses the new format
+    # 1.9a was the version that tmux changed the syntax of the theming
+    is_newest=$(tmux_newest "1.9a" "$tmux_version" && echo true || echo false)
 
     # if we are not in a tmux session and want one, start it
-    start_tmux "$DIRECTORY_NOW"
+    start_tmux "$DIRECTORY_NOW" "$colors_now" "$APPLICATION_UNICODE" "$is_newest"
 
     # exit when tmux ends, no need to rerun code
     exit
 
 fi
 
-# aliases to my preferred configurations
-alias clear_history='history -c; history -w'
-alias grip='grip --user=$GIT_API_EMAIL --pass=$GIT_API_KEY --quiet'
-alias nano='nano -l -E -T4'
-alias cp='cp -i'
-alias mv='mv -i'
-
-# add autocompletion to the sudo command
-complete -cf sudo
-
-# ignore commands that start with space and duplicates
-export HISTCONTROL=ignoreboth
-
-# add the color aliases
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-
-# add the gcc colors as well
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# check if the git autocompletion file exists
-if [ -f "/etc/bash_completion.d/git-prompt" ]; then
-	source "/etc/bash_completion.d/git-prompt"
-fi
+# source aliases and basic shell configs
+source "$DIRECTORY_NOW""/basic.bash"
 
 # source the ps1 file that is contained in the same folder
 source "$DIRECTORY_NOW""/psline.bash"
-
