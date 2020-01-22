@@ -95,9 +95,6 @@ if ! check_tmux "$TMUX_START"; then
         colors_now="$FORCE_COLORS"
     fi
 
-    echo $colors_now
-    read
-
     # extract the tmux version
     tmux_version=$(tmux_version)
 
