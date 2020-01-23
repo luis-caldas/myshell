@@ -73,31 +73,17 @@ is_new_tmux() {
 # extract the current folder
 current_folder=$(get_folder)
 
+# theme colouring
+export tmux_theme_clock_mode_style=24
+export tmux_theme_status_interval=1
+export tmux_theme_status_justify=centre
+export tmux_theme_status_left_length=40
+export tmux_theme_status_right_length=150
+
 # initialize the colours variables with default 8 colour support
 tmux_colour_white=colour7
 tmux_colour_black=colour0
 tmux_colour_grey=colour8
-
-# set the term variable to simply screen
-term_set="screen"
-
-# change the variables to support 256 colours
-if [[ $colours_supported == "256" ]]; then
-    # reset the variable with the new colours
-    # tmux_colour_main_1=colour245
-    # tmux_colour_main_2=colour250
-    # tmux_colour_main_3=colour245
-    # tmux_colour_black_1=black
-    # tmux_colour_grey_1=colour233
-    # tmux_colour_grey_2=colour235
-    # tmux_colour_grey_3=colour238
-    # tmux_colour_grey_4=colour240
-    # tmux_colour_grey_5=colour243
-    # tmux_colour_grey_6=colour245
-
-    # update the TERM as needed
-    term_set="screen-256color"
-fi
 
 # line specific colours
 tmux_line_color_activity="$tmux_colour_white"
@@ -120,9 +106,8 @@ tmux_line_status_right_right_fg="$tmux_colour_grey"
 tmux_line_status_right_bg="$tmux_colour_white"
 tmux_line_status_right_fg="$tmux_colour_grey"
 
-# theme colouring
+# export the variables to envsubst
 export tmux_theme_clock_mode_colour="$tmux_colour_white"
-export tmux_theme_clock_mode_style=24
 export tmux_theme_display_panes_active_colour="$tmux_colour_grey"
 export tmux_theme_display_panes_colour="$tmux_colour_grey"
 export tmux_theme_message_bg="$tmux_colour_grey"
@@ -137,19 +122,83 @@ export tmux_theme_pane_border_bg=default
 export tmux_theme_pane_border_fg="$tmux_colour_grey"
 export tmux_theme_status_bg="$tmux_line_status_bg"
 export tmux_theme_status_fg="$tmux_line_status_fg"
-export tmux_theme_status_interval=1
-export tmux_theme_status_justify=centre
 export tmux_theme_status_left_bg="$tmux_line_status_left_bg"
 export tmux_theme_status_left_fg="$tmux_line_status_left_fg"
-export tmux_theme_status_left_length=40
 export tmux_theme_status_right_bg="$tmux_line_status_right_bg"
 export tmux_theme_status_right_fg="$tmux_line_status_right_fg"
-export tmux_theme_status_right_length=150
 export tmux_theme_window_status_activity_bg="$tmux_theme_status_bg"
 export tmux_theme_window_status_activity_fg="$tmux_line_color_activity"
 export tmux_theme_window_status_separator=""
 export tmux_theme_window_status_current_bg="$tmux_colour_white"
 export tmux_theme_window_status_current_fg="$tmux_colour_grey"
+
+# set the term variable to simply screen
+term_set="screen"
+
+# change the variables to support 256 colours
+if [[ $colours_supported == "256" ]]; then
+    # reset the variable with the new colours
+    tmux_colour_main_1=colour245
+    tmux_colour_main_2=colour250
+    tmux_colour_main_3=colour245
+    tmux_colour_black_1=black
+    tmux_colour_grey_1=colour233
+    tmux_colour_grey_2=colour235
+    tmux_colour_grey_3=colour238
+    tmux_colour_grey_4=colour240
+    tmux_colour_grey_5=colour243
+    tmux_colour_grey_6=colour245
+
+    # line specific colours
+    tmux_line_color_activity="$tmux_colour_grey_6"
+    tmux_line_status_bg="$tmux_colour_grey_1"
+    tmux_line_status_fg="$tmux_colour_grey_4"
+    tmux_line_status_left_left_bg="$tmux_colour_main_1"
+    tmux_line_status_left_left_fg="$tmux_line_status_bg"
+    tmux_line_status_left_middle_bg="$tmux_line_status_fg"
+    tmux_line_status_left_middle_fg="$tmux_line_status_bg"
+    tmux_line_status_left_right_bg="$tmux_colour_grey_2"
+    tmux_line_status_left_right_fg="$tmux_line_status_fg"
+    tmux_line_status_left_bg="$tmux_colour_grey_1"
+    tmux_line_status_left_fg="$tmux_colour_grey_5"
+    tmux_line_status_right_left_bg="$tmux_colour_grey_2"
+    tmux_line_status_right_left_fg="$tmux_line_status_fg"
+    tmux_line_status_right_middle_bg="$tmux_line_status_fg"
+    tmux_line_status_right_middle_fg="$tmux_line_status_bg"
+    tmux_line_status_right_right_bg="$tmux_colour_grey_6"
+    tmux_line_status_right_right_fg="$tmux_line_status_bg"
+    tmux_line_status_right_bg="$tmux_colour_grey_1"
+    tmux_line_status_right_fg="$tmux_colour_grey_5"
+
+    # export the variables to envsubst
+    export tmux_theme_clock_mode_colour="$tmux_colour_main_1"
+    export tmux_theme_display_panes_active_colour="$tmux_colour_grey_6"
+    export tmux_theme_display_panes_colour="$tmux_colour_grey_1"
+    export tmux_theme_message_bg="$tmux_colour_main_1"
+    export tmux_theme_message_command_bg="$tmux_colour_main_1"
+    export tmux_theme_message_command_fg="$tmux_colour_black_1"
+    export tmux_theme_message_fg="$tmux_colour_black_1"
+    export tmux_theme_mode_bg="$tmux_colour_main_1"
+    export tmux_theme_mode_fg="$tmux_colour_black_1"
+    export tmux_theme_pane_active_border_bg=default
+    export tmux_theme_pane_active_border_fg="$tmux_colour_main_1"
+    export tmux_theme_pane_border_bg=default
+    export tmux_theme_pane_border_fg="$tmux_colour_grey_3"
+    export tmux_theme_status_bg="$tmux_line_status_bg"
+    export tmux_theme_status_fg="$tmux_line_status_fg"
+    export tmux_theme_status_left_bg="$tmux_line_status_left_bg"
+    export tmux_theme_status_left_fg="$tmux_line_status_left_fg"
+    export tmux_theme_status_right_bg="$tmux_line_status_right_bg"
+    export tmux_theme_status_right_fg="$tmux_line_status_right_fg"
+    export tmux_theme_window_status_activity_bg="$tmux_theme_status_bg"
+    export tmux_theme_window_status_activity_fg="$tmux_line_color_activity"
+    export tmux_theme_window_status_separator=""
+    export tmux_theme_window_status_current_bg="$tmux_colour_black_1"
+    export tmux_theme_window_status_current_fg="$tmux_colour_main_2"
+
+    # update the TERM as needed
+    term_set="screen-256color"
+fi
 
 ### build the tab blocks
 export tmux_theme_window_status_format="  $tmux_window_status  "
