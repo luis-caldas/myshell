@@ -13,8 +13,8 @@
 tmux_block_left_left="#S"
 tmux_block_left_middle="#(whoami)"
 tmux_block_left_right="#I:#P"
-tmux_block_right_left="%H:%M:%S"
-tmux_block_right_middle="%d/%m/%y"
+tmux_block_right_left="%H:%M:%S %Z"
+tmux_block_right_middle="%d/%m/%y %a"
 tmux_block_right_right="#H"
 # tabs
 tmux_window_status_current="#I:#W#F"
