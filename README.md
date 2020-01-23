@@ -16,6 +16,6 @@ Environment vars can be set to `true` or `false` in order to customize the shell
 
  - `FORCE_COLORS` allows colors to be forced to a specific number
 
-##### Xrvt-Unicode
+##### Rxvt-Unicode
 
-Include the path to `xrvt.xresources` to your `.Xresources` file
+Include the path to `urxvt.xresources` to your `.Xresources` file
