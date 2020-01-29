@@ -230,7 +230,7 @@ export tmux_theme_window_status_format="  $tmux_window_status  "
 # check unicode and add block if present
 temp_block=""
 is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_right"
-temp_block="$temp_block""#[fg=$tmux_theme_window_status_current_fg,bg=$tmux_theme_middle] $tmux_window_status_current "
+temp_block="$temp_block""#[fg=$tmux_theme_window_status_current_fg,bg=$tmux_theme_window_status_current_bg,$tmux_theme_bold_middle] $tmux_window_status_current "
 is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_left"
 export tmux_theme_window_status_current_format="$temp_block"
 
