@@ -20,6 +20,12 @@ tmux_block_right_right="#H"
 tmux_window_status_current="#I:#W#F"
 tmux_window_status="#I:#W#F"
 
+# unicode symbols
+arrow_left=""
+arrow_left_hollow=""
+arrow_right=""
+arrow_right_hollow=""
+
 #############
 # Arguments #
 #############
@@ -223,9 +229,9 @@ export tmux_theme_window_status_format="  $tmux_window_status  "
 
 # check unicode and add block if present
 temp_block=""
-is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]"
-temp_block="$temp_block""#[fg=$tmux_theme_window_status_current_fg,$tmux_theme_middle] $tmux_window_status_current "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_right"
+temp_block="$temp_block""#[fg=$tmux_theme_window_status_current_fg,bg=$tmux_theme_middle] $tmux_window_status_current "
+is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_left"
 export tmux_theme_window_status_current_format="$temp_block"
 
 ### build the left and right blocks
@@ -233,20 +239,20 @@ export tmux_theme_window_status_current_format="$temp_block"
 # build the left block
 temp_block=""
 temp_block="$temp_block""#[fg=$tmux_line_status_left_left_fg,bg=$tmux_line_status_left_left_bg,$tmux_theme_bold_left_left] $tmux_block_left_left "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_left_bg,bg=$tmux_line_status_left_middle_bg,nobold]"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_left_bg,bg=$tmux_line_status_left_middle_bg,nobold]$arrow_right"
 temp_block="$temp_block""#[fg=$tmux_line_status_left_middle_fg,bg=$tmux_line_status_left_middle_bg,$tmux_theme_bold_left_middle] $tmux_block_left_middle "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_middle_bg,bg=$tmux_line_status_left_right_bg,nobold]"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_middle_bg,bg=$tmux_line_status_left_right_bg,nobold]$arrow_right"
 temp_block="$temp_block""#[fg=$tmux_line_status_left_right_fg,bg=$tmux_line_status_left_right_bg,$tmux_theme_bold_left_left] $tmux_block_left_right "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_right_bg,bg=$tmux_theme_status_bg,nobold]"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_right_bg,bg=$tmux_theme_status_bg,nobold]$arrow_right"
 export tmux_theme_status_left="$temp_block"
 
 # build the right block
 temp_block=""
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_left_bg,bg=$tmux_theme_status_bg,nobold]#"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_left_bg,bg=$tmux_theme_status_bg,nobold]$arrow_left"
 temp_block="$temp_block""#[fg=$tmux_line_status_right_left_fg,bg=$tmux_line_status_right_left_bg,$tmux_theme_bold_right_left] $tmux_block_right_left "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_middle_bg,bg=$tmux_line_status_right_left_bg,nobold]#"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_middle_bg,bg=$tmux_line_status_right_left_bg,nobold]$arrow_left"
 temp_block="$temp_block""#[fg=$tmux_line_status_right_middle_fg,bg=$tmux_line_status_right_middle_bg,$tmux_theme_bold_right_middle] $tmux_block_right_middle "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_right_bg,bg=$tmux_line_status_right_middle_bg,nobold]#"
+is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_right_bg,bg=$tmux_line_status_right_middle_bg,nobold]$arrow_left"
 temp_block="$temp_block""#[fg=$tmux_line_status_right_right_fg,bg=$tmux_line_status_right_right_bg,$tmux_theme_bold_right_right] $tmux_block_right_right "
 export tmux_theme_status_right="$temp_block"
 
