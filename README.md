@@ -18,5 +18,5 @@ Before sourcing the file, environment vars can be set to `true` or `false` in or
 
 ##### Rxvt-Unicode
 
-Include the path to `urxvt.xresources` in your `~/.Xresources` file
+Include the path to `rxvt-unicode/urxvt.xresources` in your `~/.Xresources` file
 
