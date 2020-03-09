@@ -3,7 +3,7 @@
 # Generate a tmuxtheme file depending on the supported
 # colours and fonts of the terminal
 
-# Also creates the file based on the tmux version
+# Also creates the theme based on the tmux version
 
 ##########
 # Config #
@@ -78,6 +78,7 @@ is_new_tmux() {
 
 # extract the current folder
 current_folder=$(get_folder)
+compatibility_folder="$current_folder""/theme-compatibility"
 
 # theme colouring
 export tmux_theme_clock_mode_style=24
@@ -261,7 +262,7 @@ echo set -g default-terminal "$term_set"
 
 # pull the skeleton depending on the tmux version
 if is_new_tmux; then
-    envsubst < "$current_folder""/skeleton/new.tmuxtheme"
+    envsubst < "$compatibility_folder""/new.tmuxtheme"
 else
-    envsubst < "$current_folder""/skeleton/old.tmuxtheme"
+    envsubst < "$compatibility_folder""/old.tmuxtheme"
 fi

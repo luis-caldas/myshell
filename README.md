@@ -6,16 +6,17 @@ Contains configs for the Bash, Xrvt-Unicode, PS lines and TMUX.
 
 #### Bash, TMUX and PS?
 
-Source the `shell.bash` file to your `.bashrc`
+Source the `shell/shell.bash` file to your `~/.bashrc`
 
-Environment vars can be set to `true` or `false` in order to customize the shell
+Before sourcing the file, environment vars can be set to `true` or `false` in order to customize the shell
 
- - `TMUX_START` starts TMUX if is set
+ - `TMUX_START` starts tmux automatically each session if set
 
  - `APPLICATION_UNICODE` allows unicode support in themes if set
 
- - `FORCE_COLORS` allows colors to be forced to a specific number
+ - `FORCE_COLORS` allows colors to be forced to a specific number in the theme (accepts whole numbers)
 
 ##### Rxvt-Unicode
 
-Include the path to `urxvt.xresources` to your `.Xresources` file
+Include the path to `urxvt.xresources` in your `~/.Xresources` file
+

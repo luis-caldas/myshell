@@ -33,11 +33,10 @@ function get_folder() {
 
 # extract the supported number of colors from the terminal
 function number_colors() {
-
     tput colors
-
 }
 
+# extract the current tmux version
 function tmux_version() {
 
     # extract tmux version number
@@ -45,6 +44,7 @@ function tmux_version() {
 
 }
 
+# function used to compare versionioning of applications
 function tmux_newest() {
 
     [  "$1" = "$(echo -e "$1\n$2" | sort -V | head -n1)" ]
@@ -67,13 +67,21 @@ function check_tmux() {
 function start_tmux() {
 
     # translate argument name
-    dir_now="$1"
+
+    # the directory in which the theme generator and config are located
+    tmux_directory="$1"
+
+    # the number of colors supported by the terminal
     colors_now="$2"
+
+    # check if the application was forced to be in unicode
     is_unicode="$3"
+
+    # check which tmux version we are running so the theme generator can generate a proper theme
     is_newest="$4"
 
     # start tmux with the generated configs
-    tmux -f <(cat "$dir_now/tmux.conf" ; bash "$dir_now""/generate-theme.bash" "$colors_now" "$is_unicode" "$is_newest")
+    tmux -f <(cat "$tmux_directory""/tmux.conf" ; bash "$tmux_directory""/theme.bash" "$colors_now" "$is_unicode" "$is_newest")
 
 }
 
@@ -103,7 +111,7 @@ if ! check_tmux "$TMUX_START"; then
     is_newest=$(tmux_newest "1.9a" "$tmux_version" && echo true || echo false)
 
     # if we are not in a tmux session and want one, start it
-    start_tmux "$DIRECTORY_NOW" "$colors_now" "$APPLICATION_UNICODE" "$is_newest"
+    start_tmux "$DIRECTORY_NOW""/../tmux" "$colors_now" "$APPLICATION_UNICODE" "$is_newest"
 
     # exit when tmux ends, no need to rerun code
     exit
