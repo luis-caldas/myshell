@@ -20,3 +20,5 @@ Before sourcing the file, environment vars can be set to `true` or `false` in or
 
 Include the path to `rxvt-unicode/urxvt.xresources` in your `~/.Xresources` file
 
+If you want to add the font-resize extension, link the `rxvt-unicode/scripts/resize-font` to the inside of the `~/.urxvt/ext` folder 
+
