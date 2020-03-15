@@ -118,6 +118,9 @@ if ! check_tmux "$TMUX_START"; then
 
 fi
 
+# add the custom script folder to xrvt
+echo "URxvt.perl-lib: ""$DIRECTORY_NOW""/../rxvt-unicode/scripts" | xrdb -merge 2>/dev/null
+
 # source aliases and basic shell configs
 source "$DIRECTORY_NOW""/basic.bash"
 

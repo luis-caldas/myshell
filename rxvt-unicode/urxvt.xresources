@@ -21,6 +21,12 @@ URxvt.keysym.Control-Meta-v: builtin-string:
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 
+! Add the custom script to resize fonts
+URxvt.perl-ext-common: resize-font
+URxvt.keysym.C-minus: resize-font:smaller
+URxvt.keysym.C-equal: resize-font:bigger
+URxvt.keysym.C-0: resize-font:reset
+
 ! -----------
 ! Font Config
 ! -----------
