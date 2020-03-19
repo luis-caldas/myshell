@@ -1,6 +1,6 @@
 ! Set the terminal font to the preferred monospace
 URxvt.letterSpace: -1
-URxvt.font: xft:Mono:size=8:antialias=true
+URxvt.font: xft:Mono:size=7:antialias=true
 
 ! Remove the scroll bar
 URxvt.scrollBar: false
