@@ -22,10 +22,10 @@ URxvt.iso14755: false
 URxvt.iso14755_52: false
 
 ! Add the custom script to resize fonts
-!URxvt.perl-ext-common: resize-font
-!URxvt.keysym.C-minus: resize-font:smaller
-!URxvt.keysym.C-equal: resize-font:bigger
-!URxvt.keysym.C-0: resize-font:reset
+URxvt.perl-ext-common: default,resize-font
+URxvt.keysym.Control-minus: resize-font:smaller
+URxvt.keysym.Control-equal: resize-font:bigger
+URxvt.keysym.Control-0: resize-font:reset
 
 ! -----------
 ! Font Config
