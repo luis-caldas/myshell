@@ -1,12 +1,14 @@
 [options]
 
-font = Monospace 8
+font = Monospace 10
 scrollback_lines = 10000
 
 [colors]
 
-foreground = #ffffff
-background = rgba(13, 13, 13, 0.9608)
+foreground = #FFFFFF
+background = #000000
+# background = rgba(13, 13, 13, 0.9608)
+# background = #C0C0C0
 
 color0 = #000000
 color1 = #95043F
