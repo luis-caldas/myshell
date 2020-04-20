@@ -10,7 +10,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 # add autocompletion to the sudo command
-complete -cf sudo
+# complete -cf sudo
 
 # ignore commands that start with space and duplicates
 export HISTCONTROL=ignoreboth
