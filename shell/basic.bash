@@ -9,11 +9,11 @@ alias nano='nano -l -E -T4'
 alias cp='cp -i'
 alias mv='mv -i'
 
-# add autocompletion to the sudo command
-# complete -cf sudo
-
 # ignore commands that start with space and duplicates
 export HISTCONTROL=ignoreboth
+
+# change the local of the history file
+export HISTFILE="${HOME}""/.cache/.bash_history"
 
 # add the color aliases
 alias ls='ls --color=auto'
@@ -21,9 +21,6 @@ alias grep='grep --color=auto'
 
 # add the gcc colors as well
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# change the local of the history file
-export HISTFILE="${HOME}""/.cache/.bash_history"
 
 # check if the git autocompletion file exists
 if [ -f "/etc/bash_completion.d/git-prompt" ]; then
