@@ -16,9 +16,3 @@ Before sourcing the file, environment vars can be set to `true` or `false` in or
 
  - `FORCE_COLORS` allows colors to be forced to a specific number in the theme (accepts whole numbers)
 
-##### Rxvt-Unicode
-
-Include the path to `rxvt-unicode/urxvt.xresources` in your `~/.Xresources` file
-
-If you want to add the font-resize extension, link the `rxvt-unicode/scripts/resize-font` to the inside of the `~/.urxvt/ext` folder 
-
