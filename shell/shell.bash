@@ -27,6 +27,9 @@ function get_folder() {
     echo "$DIR"
 }
 
+# get the dir
+DIRECTORY_NOW=$(get_folder)
+
 # source aliases and basic shell configs
 source "$DIRECTORY_NOW""/basic.bash"
 
