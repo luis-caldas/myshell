@@ -1,24 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# vim: ft=bash:foldmethod=marker:expandtab:ts=4:shiftwidth=4
+
 
 # Generate a tmuxtheme file depending on the supported
 # colours and fonts of the terminal
 
 # Also creates the theme based on the tmux version
 
-##########
-# Config #
-##########
+# {{{ Config #
 
-# Blocks of data that appear on TMUX
-tmux_block_left_left="#S"
-tmux_block_left_middle="#(whoami)"
-tmux_block_left_right="#I:#P"
-tmux_block_right_left="%H:%M:%S %Z"
-tmux_block_right_middle="%d/%m/%y %a"
-tmux_block_right_right="#H"
+# blocks of data that appear on TMUX
+t_block_l_l="#S"
+t_block_l_m="#(whoami)"
+t_block_l_r="#I:#P"
+t_block_r_l="%H:%M:%S %Z"
+t_block_r_m="%d/%m/%y %a"
+t_block_r_r="#H"
+
 # tabs
-tmux_window_status_current="#I:#W#F"
-tmux_window_status="#I:#W#F"
+t_window_status_current="#I:#W#F"
+t_window_status="#I:#W#F"
 
 # unicode symbols
 arrow_left=""
@@ -26,18 +27,18 @@ arrow_left_hollow=""
 arrow_right=""
 arrow_right_hollow=""
 
-#############
-# Arguments #
-#############
+# }}}
+
+# {{{ Arguments
 
 # extract arguments to new variable names
 colours_supported="$1"
 unicode_supported="$2"
 tmux_version_new="$3"
 
-#############
-# Functions #
-#############
+# }}}
+
+# {{{ Functions
 
 # function that finds the folder in which the script executing it is located
 function get_folder() {
@@ -65,20 +66,21 @@ function get_folder() {
 }
 
 # functions for quick verification
-is_unicode() {
+# is_unicode
+iu() {
     [[ $unicode_supported == "true" ]]
 }
 is_new_tmux() {
     [[ $tmux_version_new == "true" ]]
 }
 
-##########
-# Script #
-##########
+# }}}
+
+# {{{ Main
 
 # extract the current folder
 current_folder=$(get_folder)
-compatibility_folder="$current_folder""/theme-compatibility"
+compatibility_folder="$current_folder""/compatibility"
 
 # theme colouring
 export tmux_theme_clock_mode_style=24
@@ -86,176 +88,170 @@ export tmux_theme_status_interval=1
 export tmux_theme_status_justify=centre
 export tmux_theme_status_left_length=40
 export tmux_theme_status_right_length=150
+export tmux_theme_window_status_separator=""
+
+# {{{ Colours
+
+# general colouring
+t_back=terminal
+t_def=default
 
 # initialize the colours variables with default 8 colour support
-tmux_colour_white=colour7
-tmux_colour_black=colour0
+t_white=colour7
+t_black=colour0
+
+# initialize all more complex colours
+t_c_grey_1=colour233
+t_c_grey_2=colour235
+t_c_grey_3=colour238
+t_c_grey_4=colour240
+t_c_grey_5=colour243
+t_c_grey_6=colour245
+t_c_grey_7=colour250
+
+# }}}
+
+# {{{ Variable Assingment
 
 # line specific colours
-tmux_line_color_activity="$tmux_colour_white"
-tmux_line_status_bg="$tmux_colour_black"
-tmux_line_status_fg="$tmux_colour_white"
-tmux_line_status_left_left_bg="$tmux_colour_white"
-tmux_line_status_left_left_fg="$tmux_colour_black"
-tmux_line_status_left_middle_bg="$tmux_colour_black"
-tmux_line_status_left_middle_fg="$tmux_colour_white"
-tmux_line_status_left_right_bg="$tmux_colour_white"
-tmux_line_status_left_right_fg="$tmux_colour_black"
-tmux_line_status_left_bg="$tmux_colour_white"
-tmux_line_status_left_fg="$tmux_colour_black"
-tmux_line_status_right_left_bg="$tmux_colour_white"
-tmux_line_status_right_left_fg="$tmux_colour_black"
-tmux_line_status_right_middle_bg="$tmux_colour_black"
-tmux_line_status_right_middle_fg="$tmux_colour_white"
-tmux_line_status_right_right_bg="$tmux_colour_white"
-tmux_line_status_right_right_fg="$tmux_colour_black"
-tmux_line_status_right_bg="$tmux_colour_white"
-tmux_line_status_right_fg="$tmux_colour_black"
+# that will help when building the bottom status line
+t_line_ca="$t_white"
+t_line_bg="$t_back"
+t_line_fg="$t_white"
+t_line_l_l_bg="$t_white"
+t_line_l_l_fg="$t_black"
+t_line_l_m_bg="$t_black"
+t_line_l_m_fg="$t_white"
+t_line_l_r_bg="$t_white"
+t_line_l_r_fg="$t_black"
+t_line_m_bg="$t_white"
 
 # export the variables to envsubst
-export tmux_theme_clock_mode_colour="$tmux_colour_white"
-export tmux_theme_display_panes_active_colour="$tmux_colour_black"
-export tmux_theme_display_panes_colour="$tmux_colour_white"
-export tmux_theme_message_bg="$tmux_colour_white"
-export tmux_theme_message_command_bg="$tmux_colour_white"
-export tmux_theme_message_command_fg="$tmux_colour_black"
-export tmux_theme_message_fg="$tmux_colour_black"
-export tmux_theme_mode_bg="$tmux_colour_white"
-export tmux_theme_mode_fg="$tmux_colour_black"
-export tmux_theme_pane_active_border_bg=default
-export tmux_theme_pane_active_border_fg="$tmux_colour_white"
-export tmux_theme_pane_border_bg=default
-export tmux_theme_pane_border_fg="$tmux_colour_white"
-export tmux_theme_status_bg="$tmux_line_status_bg"
-export tmux_theme_status_fg="$tmux_line_status_fg"
-export tmux_theme_status_left_bg="$tmux_line_status_left_bg"
-export tmux_theme_status_left_fg="$tmux_line_status_left_fg"
-export tmux_theme_status_right_bg="$tmux_line_status_right_bg"
-export tmux_theme_status_right_fg="$tmux_line_status_right_fg"
-export tmux_theme_window_status_activity_bg="$tmux_theme_status_bg"
-export tmux_theme_window_status_activity_fg="$tmux_line_color_activity"
-export tmux_theme_window_status_separator=""
-export tmux_theme_window_status_current_bg="$tmux_colour_white"
-export tmux_theme_window_status_current_fg="$tmux_colour_black"
-
+export tmux_theme_clock_mode_colour="$t_white"
+export tmux_theme_display_panes_active_colour="$t_black"
+export tmux_theme_display_panes_colour="$t_white"
+export tmux_theme_message_bg="$t_white"
+export tmux_theme_message_command_bg="$t_white"
+export tmux_theme_message_command_fg="$t_black"
+export tmux_theme_message_fg="$t_black"
+export tmux_theme_mode_bg="$t_white"
+export tmux_theme_mode_fg="$t_black"
+export tmux_theme_pane_active_border_bg="$t_def"
+export tmux_theme_pane_active_border_fg="$t_white"
+export tmux_theme_pane_border_bg="$t_def"
+export tmux_theme_pane_border_fg="$t_white"
+export tmux_theme_status_bg="$t_line_bg"
+export tmux_theme_status_fg="$t_line_fg"
+export tmux_theme_window_status_activity_bg="$t_line_bg"
+export tmux_theme_window_status_activity_fg="$t_line_ca"
+export tmux_theme_window_status_current_bg="$t_white"
+export tmux_theme_window_status_current_fg="$t_black"
 
 # bolding of the blocks of the tmux theme
-export tmux_theme_bold_left_left="nobold" 
-export tmux_theme_bold_left_middle="nobold"
-export tmux_theme_bold_left_right="nobold"
-export tmux_theme_bold_right_left="nobold"
-export tmux_theme_bold_right_middle="nobold"
-export tmux_theme_bold_right_right="nobold"
-export tmux_theme_bold_middle="nobold"
+t_bold_l_l="nobold" 
+t_bold_l_m="nobold"
+t_bold_l_r="nobold"
+t_bold_m="nobold"
 
 # set the term variable to simply screen
 term_set="screen"
 
 # change the variables to support 256 colours
 if [[ $colours_supported == "256" ]]; then
-    # reset the variable with the new colours
-    tmux_colour_main_1=colour245
-    tmux_colour_main_2=colour250
-    tmux_colour_main_3=colour245
-    tmux_colour_black_1=black
-    tmux_colour_grey_1=colour233
-    tmux_colour_grey_2=colour235
-    tmux_colour_grey_3=colour238
-    tmux_colour_grey_4=colour240
-    tmux_colour_grey_5=colour243
-    tmux_colour_grey_6=colour245
 
     # line specific colours
-    tmux_line_color_activity="$tmux_colour_grey_6"
-    tmux_line_status_bg="$tmux_colour_grey_1"
-    tmux_line_status_fg="$tmux_colour_grey_4"
-    tmux_line_status_left_left_bg="$tmux_colour_main_1"
-    tmux_line_status_left_left_fg="$tmux_line_status_bg"
-    tmux_line_status_left_middle_bg="$tmux_line_status_fg"
-    tmux_line_status_left_middle_fg="$tmux_line_status_bg"
-    tmux_line_status_left_right_bg="$tmux_colour_grey_2"
-    tmux_line_status_left_right_fg="$tmux_line_status_fg"
-    tmux_line_status_left_bg="$tmux_colour_grey_1"
-    tmux_line_status_left_fg="$tmux_colour_grey_5"
-    tmux_line_status_right_left_bg="$tmux_colour_grey_2"
-    tmux_line_status_right_left_fg="$tmux_line_status_fg"
-    tmux_line_status_right_middle_bg="$tmux_line_status_fg"
-    tmux_line_status_right_middle_fg="$tmux_line_status_bg"
-    tmux_line_status_right_right_bg="$tmux_colour_grey_6"
-    tmux_line_status_right_right_fg="$tmux_line_status_bg"
-    tmux_line_status_right_bg="$tmux_colour_grey_1"
-    tmux_line_status_right_fg="$tmux_colour_grey_5"
+    t_line_ca="$t_c_grey_6"
+    t_line_bg="$t_back"
+    t_line_fg="$t_c_grey_4"
+    t_line_l_l_bg="$t_c_grey_7"
+    t_line_l_l_fg="$t_c_grey_1"
+    t_line_l_m_bg="$t_c_grey_6"
+    t_line_l_m_fg="$t_c_grey_1"
+    t_line_l_r_bg="$t_c_grey_2"
+    t_line_l_r_fg="$t_c_grey_7"
+    t_line_m_bg="$t_c_grey_1"
 
     # export the variables to envsubst
-    export tmux_theme_clock_mode_colour="$tmux_colour_main_1"
-    export tmux_theme_display_panes_active_colour="$tmux_colour_grey_6"
-    export tmux_theme_display_panes_colour="$tmux_colour_grey_1"
-    export tmux_theme_message_bg="$tmux_colour_main_1"
-    export tmux_theme_message_command_bg="$tmux_colour_main_1"
-    export tmux_theme_message_command_fg="$tmux_colour_black_1"
-    export tmux_theme_message_fg="$tmux_colour_black_1"
-    export tmux_theme_mode_bg="$tmux_colour_main_1"
-    export tmux_theme_mode_fg="$tmux_colour_black_1"
-    export tmux_theme_pane_active_border_bg=default
-    export tmux_theme_pane_active_border_fg="$tmux_colour_main_1"
-    export tmux_theme_pane_border_bg=default
-    export tmux_theme_pane_border_fg="$tmux_colour_grey_3"
-    export tmux_theme_status_bg="$tmux_line_status_bg"
-    export tmux_theme_status_fg="$tmux_line_status_fg"
-    export tmux_theme_status_left_bg="$tmux_line_status_left_bg"
-    export tmux_theme_status_left_fg="$tmux_line_status_left_fg"
-    export tmux_theme_status_right_bg="$tmux_line_status_right_bg"
-    export tmux_theme_status_right_fg="$tmux_line_status_right_fg"
-    export tmux_theme_window_status_activity_bg="$tmux_theme_status_bg"
-    export tmux_theme_window_status_activity_fg="$tmux_line_color_activity"
-    export tmux_theme_window_status_separator=""
-    export tmux_theme_window_status_current_bg="$tmux_colour_black_1"
-    export tmux_theme_window_status_current_fg="$tmux_colour_main_2"
+    export tmux_theme_clock_mode_colour="$t_c_grey_6"
+    export tmux_theme_display_panes_active_colour="$t_c_grey_6"
+    export tmux_theme_display_panes_colour="$t_c_grey_1"
+    export tmux_theme_message_bg="$t_c_grey_6"
+    export tmux_theme_message_command_bg="$t_c_grey_6"
+    export tmux_theme_message_command_fg="$t_black"
+    export tmux_theme_message_fg="$t_black"
+    export tmux_theme_mode_bg="$t_c_grey_6"
+    export tmux_theme_mode_fg="$t_black"
+    export tmux_theme_pane_active_border_bg="$t_def"
+    export tmux_theme_pane_active_border_fg="$t_c_grey_7"
+    export tmux_theme_pane_border_bg="$t_def"
+    export tmux_theme_pane_border_fg="$t_c_grey_3"
+    export tmux_theme_status_bg="$t_line_bg"
+    export tmux_theme_status_fg="$t_line_fg"
+    export tmux_theme_window_status_activity_bg="$t_line_bg"
+    export tmux_theme_window_status_activity_fg="$t_line_ca"
+    export tmux_theme_window_status_current_bg="$t_c_grey_1"
+    export tmux_theme_window_status_current_fg="$t_c_grey_7"
 
     # bolding of the blocks of the tmux theme
-    export tmux_theme_bold_left_left="bold" 
-    export tmux_theme_bold_left_middle="nobold"
-    export tmux_theme_bold_left_right="nobold"
-    export tmux_theme_bold_right_left="nobold"
-    export tmux_theme_bold_right_middle="nobold"
-    export tmux_theme_bold_right_right="bold"
-    export tmux_theme_bold_middle="nobold"
+    t_bold_l_l="bold" 
+    t_bold_l_m="nobold"
+    t_bold_l_r="nobold"
+    t_bold_m="nobold"
 
     # update the TERM as needed
     term_set="screen-256color"
 fi
 
+# }}}
+
+# {{{ Block building
+
+# mirror the colours and boldness set for the left of the status line
+t_line_r_l_bg="$t_line_l_r_bg"
+t_line_r_l_fg="$t_line_l_r_fg"
+t_line_r_m_bg="$t_line_l_m_bg"
+t_line_r_m_fg="$t_line_l_m_fg"
+t_line_r_r_bg="$t_line_l_l_bg"
+t_line_r_r_fg="$t_line_l_l_fg"
+t_bold_r_l="$t_bold_l_r"
+t_bold_r_m="$t_bold_l_m"
+t_bold_r_r="$t_bold_l_l"
+
 ### build the tab blocks
-export tmux_theme_window_status_format="  $tmux_window_status  "
+export tmux_theme_window_status_format="  $t_window_status  "
 
 # check unicode and add block if present
-temp_block=""
-is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_right"
-temp_block="$temp_block""#[fg=$tmux_theme_window_status_current_fg,bg=$tmux_theme_window_status_current_bg,$tmux_theme_bold_middle] $tmux_window_status_current "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_theme_status_bg,bg=$tmux_theme_window_status_current_bg,nobold]$arrow_left"
-export tmux_theme_window_status_current_format="$temp_block"
+_tb=""
+iu && _tb="$_tb""#[fg=$t_line_m_bg,bg=$t_back,nobold]$arrow_left"
+_tb="$_tb""#[fg=$tmux_theme_window_status_current_fg,bg=$t_line_m_bg,$t_bold_m] $t_window_status_current "
+iu && _tb="$_tb""#[fg=$t_line_m_bg,bg=$t_back,nobold]$arrow_right"
+export tmux_theme_window_status_current_format="$_tb"
 
 ### build the left and right blocks
 
 # build the left block
-temp_block=""
-temp_block="$temp_block""#[fg=$tmux_line_status_left_left_fg,bg=$tmux_line_status_left_left_bg,$tmux_theme_bold_left_left] $tmux_block_left_left "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_left_bg,bg=$tmux_line_status_left_middle_bg,nobold]$arrow_right"
-temp_block="$temp_block""#[fg=$tmux_line_status_left_middle_fg,bg=$tmux_line_status_left_middle_bg,$tmux_theme_bold_left_middle] $tmux_block_left_middle "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_middle_bg,bg=$tmux_line_status_left_right_bg,nobold]$arrow_right"
-temp_block="$temp_block""#[fg=$tmux_line_status_left_right_fg,bg=$tmux_line_status_left_right_bg,$tmux_theme_bold_left_left] $tmux_block_left_right "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_left_right_bg,bg=$tmux_theme_status_bg,nobold]$arrow_right"
-export tmux_theme_status_left="$temp_block"
+_tb=""
+iu && _tb="$_tb""#[fg=$t_line_l_l_bg,bg=$t_back,nobold]$arrow_left"
+_tb="$_tb""#[fg=$t_line_l_l_fg,bg=$t_line_l_l_bg,$t_bold_l_l] $t_block_l_l "
+iu && _tb="$_tb""#[fg=$t_line_l_l_bg,bg=$t_line_l_m_bg,nobold]$arrow_right"
+_tb="$_tb""#[fg=$t_line_l_m_fg,bg=$t_line_l_m_bg,$t_bold_l_m] $t_block_l_m "
+iu && _tb="$_tb""#[fg=$t_line_l_m_bg,bg=$t_line_l_r_bg,nobold]$arrow_right"
+_tb="$_tb""#[fg=$t_line_l_r_fg,bg=$t_line_l_r_bg,$t_bold_l_r] $t_block_l_r "
+iu && _tb="$_tb""#[fg=$t_line_l_r_bg,bg=$t_back,nobold]$arrow_right"
+export tmux_theme_status_left="$_tb"
 
 # build the right block
-temp_block=""
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_left_bg,bg=$tmux_theme_status_bg,nobold]$arrow_left"
-temp_block="$temp_block""#[fg=$tmux_line_status_right_left_fg,bg=$tmux_line_status_right_left_bg,$tmux_theme_bold_right_left] $tmux_block_right_left "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_middle_bg,bg=$tmux_line_status_right_left_bg,nobold]$arrow_left"
-temp_block="$temp_block""#[fg=$tmux_line_status_right_middle_fg,bg=$tmux_line_status_right_middle_bg,$tmux_theme_bold_right_middle] $tmux_block_right_middle "
-is_unicode && temp_block="$temp_block""#[fg=$tmux_line_status_right_right_bg,bg=$tmux_line_status_right_middle_bg,nobold]$arrow_left"
-temp_block="$temp_block""#[fg=$tmux_line_status_right_right_fg,bg=$tmux_line_status_right_right_bg,$tmux_theme_bold_right_right] $tmux_block_right_right "
-export tmux_theme_status_right="$temp_block"
+_tb=""
+iu && _tb="$_tb""#[fg=$t_line_r_l_bg,bg=$t_back,nobold]$arrow_left"
+_tb="$_tb""#[fg=$t_line_r_l_fg,bg=$t_line_r_l_bg,$t_bold_r_l] $t_block_r_l "
+iu && _tb="$_tb""#[fg=$t_line_r_m_bg,bg=$t_line_r_l_bg,nobold]$arrow_left"
+_tb="$_tb""#[fg=$t_line_r_m_fg,bg=$t_line_r_m_bg,$t_bold_r_m] $t_block_r_m "
+iu && _tb="$_tb""#[fg=$t_line_r_r_bg,bg=$t_line_r_m_bg,nobold]$arrow_left"
+_tb="$_tb""#[fg=$t_line_r_r_fg,bg=$t_line_r_r_bg,$t_bold_r_r] $t_block_r_r "
+iu && _tb="$_tb""#[fg=$t_line_r_r_bg,bg=$t_back,nobold]$arrow_right"
+export tmux_theme_status_right="$_tb"
+
+# }}}
 
 # export the terminal TERM var with the default naming
 echo set -g default-terminal "$term_set"
@@ -266,3 +262,5 @@ if is_new_tmux; then
 else
     envsubst < "$compatibility_folder""/old.tmuxtheme"
 fi
+
+# }}}
