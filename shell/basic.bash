@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Simple bash configurations
 
 # aliases to my preferred configurations
-alias clear_history='history -c; history -w'
+alias flush='history -c; history -w'
 alias grip='grip --user=$GIT_API_EMAIL --pass=$GIT_API_KEY --quiet'
 alias nano='nano -l -E -T4'
 alias cp='cp -i'

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ######################################################
 # a simple ps1 line for a good looking bash terminal #
