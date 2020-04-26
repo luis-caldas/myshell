@@ -19,7 +19,7 @@ export HISTFILE="${HOME}""/.cache/.bash_history"
 export EDITOR="vim"
 
 # add the color aliases
-alias ls='ls --color=auto'
+alias ls='ls --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 
 # add the gcc colors as well
