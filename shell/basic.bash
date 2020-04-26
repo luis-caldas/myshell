@@ -15,6 +15,9 @@ export HISTCONTROL=ignoreboth
 # change the local of the history file
 export HISTFILE="${HOME}""/.cache/.bash_history"
 
+# vim as preferred editor
+export EDITOR="vim"
+
 # add the color aliases
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
