@@ -113,49 +113,6 @@ t_c_grey_7=colour250
 
 # {{{ Variable Assingment
 
-# line specific colours
-# that will help when building the bottom status line
-t_line_ca="$t_white"
-t_line_bg="$t_back"
-t_line_fg="$t_white"
-t_line_l_l_bg="$t_white"
-t_line_l_l_fg="$t_black"
-t_line_l_m_bg="$t_black"
-t_line_l_m_fg="$t_white"
-t_line_l_r_bg="$t_white"
-t_line_l_r_fg="$t_black"
-t_line_m_bg="$t_white"
-
-# export the variables to envsubst
-export tmux_theme_clock_mode_colour="$t_white"
-export tmux_theme_display_panes_active_colour="$t_black"
-export tmux_theme_display_panes_colour="$t_white"
-export tmux_theme_message_bg="$t_white"
-export tmux_theme_message_command_bg="$t_white"
-export tmux_theme_message_command_fg="$t_black"
-export tmux_theme_message_fg="$t_black"
-export tmux_theme_mode_bg="$t_white"
-export tmux_theme_mode_fg="$t_black"
-export tmux_theme_pane_active_border_bg="$t_def"
-export tmux_theme_pane_active_border_fg="$t_white"
-export tmux_theme_pane_border_bg="$t_def"
-export tmux_theme_pane_border_fg="$t_white"
-export tmux_theme_status_bg="$t_line_bg"
-export tmux_theme_status_fg="$t_line_fg"
-export tmux_theme_window_status_activity_bg="$t_line_bg"
-export tmux_theme_window_status_activity_fg="$t_line_ca"
-export tmux_theme_window_status_current_bg="$t_white"
-export tmux_theme_window_status_current_fg="$t_black"
-
-# bolding of the blocks of the tmux theme
-t_bold_l_l="nobold" 
-t_bold_l_m="nobold"
-t_bold_l_r="nobold"
-t_bold_m="nobold"
-
-# set the term variable to simply screen
-term_set="screen"
-
 # change the variables to support 256 colours
 if [[ $colours_supported == "256" ]]; then
 
@@ -200,6 +157,52 @@ if [[ $colours_supported == "256" ]]; then
 
     # update the TERM as needed
     term_set="screen-256color"
+
+else
+
+    # line specific colours
+    # that will help when building the bottom status line
+    t_line_ca="$t_white"
+    t_line_bg="$t_back"
+    t_line_fg="$t_white"
+    t_line_l_l_bg="$t_white"
+    t_line_l_l_fg="$t_black"
+    t_line_l_m_bg="$t_black"
+    t_line_l_m_fg="$t_white"
+    t_line_l_r_bg="$t_white"
+    t_line_l_r_fg="$t_black"
+    t_line_m_bg="$t_white"
+
+    # export the variables to envsubst
+    export tmux_theme_clock_mode_colour="$t_white"
+    export tmux_theme_display_panes_active_colour="$t_black"
+    export tmux_theme_display_panes_colour="$t_white"
+    export tmux_theme_message_bg="$t_white"
+    export tmux_theme_message_command_bg="$t_white"
+    export tmux_theme_message_command_fg="$t_black"
+    export tmux_theme_message_fg="$t_black"
+    export tmux_theme_mode_bg="$t_white"
+    export tmux_theme_mode_fg="$t_black"
+    export tmux_theme_pane_active_border_bg="$t_def"
+    export tmux_theme_pane_active_border_fg="$t_white"
+    export tmux_theme_pane_border_bg="$t_def"
+    export tmux_theme_pane_border_fg="$t_white"
+    export tmux_theme_status_bg="$t_line_bg"
+    export tmux_theme_status_fg="$t_line_fg"
+    export tmux_theme_window_status_activity_bg="$t_line_bg"
+    export tmux_theme_window_status_activity_fg="$t_line_ca"
+    export tmux_theme_window_status_current_bg="$t_white"
+    export tmux_theme_window_status_current_fg="$t_black"
+
+    # bolding of the blocks of the tmux theme
+    t_bold_l_l="nobold" 
+    t_bold_l_m="nobold"
+    t_bold_l_r="nobold"
+    t_bold_m="nobold"
+
+    # set the term variable to simply screen
+    term_set="screen"
+
 fi
 
 # }}}
