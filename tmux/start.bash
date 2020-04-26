@@ -92,8 +92,8 @@ DIRECTORY_NOW=$(get_folder)
 colors_now=$(number_colors)
 
 # check if the colors has been forced
-if [ "$FORCE_COLORS" != "" ]; then
-    colors_now="$FORCE_COLORS"
+if [ "$FORCE_COLOURS" != "" ]; then
+    colors_now="$FORCE_COLOURS"
 fi
 
 # extract the tmux version

@@ -12,5 +12,5 @@ Before sourcing the file, environment vars can be set to `true` or `false` in or
 
  - `APPLICATION_UNICODE` allows unicode support in themes if set
 
- - `FORCE_COLORS` allows colors to be forced to a specific number in the theme (accepts whole numbers)
+ - `FORCE_COLOURS` allows colors to be forced to a specific number in the theme (accepts whole numbers)
 
