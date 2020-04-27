@@ -22,6 +22,10 @@ export EDITOR="vim"
 alias ls='ls --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 
+# some nixos aliases
+alias resw='nixos-rebuild switch --option tarball-ttl 0'
+alias sresw='sudo nixos-rebuild switch --option tarball-ttl 0'
+
 # add the gcc colors as well
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
