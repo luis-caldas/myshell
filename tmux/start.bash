@@ -79,7 +79,7 @@ function start_tmux() {
     is_newest="$4"
 
     # start tmux with the generated configs
-    tmux -f <(cat "$tmux_directory""/tmux.conf" ; bash "$tmux_directory""/theme.bash" "$colors_now" "$is_unicode" "$is_newest") "$@"
+    echo tmux -f <(cat "$tmux_directory""/tmux.conf" ; bash "$tmux_directory""/theme.bash" "$colors_now" "$is_unicode" "$is_newest") "${@:5}"
 
 }
 
@@ -104,5 +104,5 @@ tmux_version=$(tmux_version)
 is_newest=$(tmux_newest "1.9a" "$tmux_version" && echo true || echo false)
 
 # if we are not in a tmux session and want one, start it
-start_tmux "$DIRECTORY_NOW" "$colors_now" "$APPLICATION_UNICODE" "$is_newest"
+start_tmux "$DIRECTORY_NOW" "$colors_now" "$APPLICATION_UNICODE" "$is_newest" "$@"
 
