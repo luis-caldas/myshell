@@ -79,7 +79,7 @@ function start_tmux() {
     is_newest="$4"
 
     # start tmux with the generated configs
-    echo tmux -f <(cat "$tmux_directory""/tmux.conf" ; bash "$tmux_directory""/theme.bash" "$colors_now" "$is_unicode" "$is_newest") "${@:5}"
+    tmux -f <(cat "$tmux_directory""/tmux.conf" ; bash "$tmux_directory""/theme.bash" "$colors_now" "$is_unicode" "$is_newest") "${@:5}"
 
 }
 
