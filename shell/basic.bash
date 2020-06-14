@@ -9,6 +9,9 @@ alias nano='nano -l -E -T4'
 alias cp='cp -i'
 alias mv='mv -i'
 
+# enable keypad mode
+tput smkx
+
 # ignore commands that start with space and duplicates
 export HISTCONTROL=ignoreboth
 
