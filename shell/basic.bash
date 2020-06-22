@@ -8,6 +8,9 @@ alias grip='grip --user=$GIT_API_EMAIL --pass=$GIT_API_KEY --quiet'
 alias nano='nano -l -E -T4'
 alias cp='cp -i'
 alias mv='mv -i'
+alias vi='vi -p'
+alias vim='vim -p'
+alias nvim='nvim -p'
 
 # enable keypad mode
 tput smkx
