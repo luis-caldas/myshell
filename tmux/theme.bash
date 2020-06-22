@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim: ft=bash:foldmethod=marker:expandtab:ts=4:shiftwidth=4
+# vim: ft=bash:ts=4:shiftwidth=4
 
 
 # Generate a tmuxtheme file depending on the supported
@@ -258,6 +258,8 @@ export tmux_theme_status_right="$_tb"
 
 # export the terminal TERM var with the default naming
 echo set -g default-terminal "$term_set"
+# set carret change if unicode
+iu && echo set -ga terminal-overrides "'*:Ss=\E[%p1%d q:Se=\E[ q'"
 
 # pull the skeleton depending on the tmux version
 if is_new_tmux; then
