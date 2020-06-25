@@ -105,7 +105,7 @@ maybe_git() {
 SUCCESSFULNESS="${COLORS[7]}[${COLORS[10]}\$(get_color)\$(print_success)${COLORS[10]}${COLORS[7]}]${COLORS[10]}"
 
 # build the information line
-INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$JOBS_INFO $HISTORY_COMMAND $BASH_VERSION $SUCCESSFULNESS $BASH_SYMBOL_BOLD"
+INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$SUCCESSFULNESS $BASH_SYMBOL_BOLD"
 
 # build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLORS[7]}>${COLORS[10]} "
