@@ -6,17 +6,17 @@
 
 # create the color array using tput
 RAW_COLORS=(
-    "$(tput setaf 1)"  # red         0
-    "$(tput setaf 2)"  # green       1
-    "$(tput setaf 3)"  # yellow      2
-    "$(tput setaf 4)"  # blue        3
-    "$(tput setaf 5)"  # purple      4
-    "$(tput setaf 6)"  # cyan        5
-    "$(tput setaf 7)"  # gray        6
-    "$(tput bold)"     # bold        7
-    "$(tput smul)"     # underlined  8
-    "$(tput blink)"    # blinking    9
-    "$(tput sgr0)"     # reset       10
+	"$(tput setaf 1)"  # red         0
+	"$(tput setaf 2)"  # green       1
+	"$(tput setaf 3)"  # yellow      2
+	"$(tput setaf 4)"  # blue        3
+	"$(tput setaf 5)"  # purple      4
+	"$(tput setaf 6)"  # cyan        5
+	"$(tput setaf 7)"  # gray        6
+	"$(tput bold)"     # bold        7
+	"$(tput smul)"     # underlined  8
+	"$(tput blink)"    # blinking    9
+	"$(tput sgr0)"     # reset       10
 )
 
 ####################
@@ -24,19 +24,20 @@ RAW_COLORS=(
 ####################
 
 # colors in numbers
-USER_NAME_COLOR=5
-HOSTNAME_COLOR=3
+USER_NAME_COLOR=3
+HOSTNAME_COLOR=2
 DIRECTORY_COLOR=4
-GIT_COLOR=5
+GIT_COLOR=3
 COMMAND_CODE_GOOD_COLOR=3
 COMMAND_CODE_BAD_COLOR=0
 BASH_SYMBOL="$"
 
 # variables that change for root
 if [[ $EUID -eq 0 ]]; then
-    USER_NAME_COLOR=3
-    HOSTNAME_COLOR=5
-    BASH_SYMBOL="#"
+	OLD_USER_NAME=$USER_NAME_COLOR
+	USER_NAME_COLOR=$HOSTNAME_COLOR
+	HOSTNAME_COLOR=$OLD_USER_NAME
+	BASH_SYMBOL="#"
 fi
 
 ####################
@@ -46,7 +47,7 @@ LIMITERS=( "\001" "\002" )
 
 # iterate over the raw colors and add the limiters
 for (( loop_index = 0; loop_index <= ${#RAW_COLORS[@]} + 1; loop_index++ )); do
-    COLORS[$loop_index]="${LIMITERS[0]}${RAW_COLORS[$loop_index]}${LIMITERS[1]}"
+	COLORS[$loop_index]="${LIMITERS[0]}${RAW_COLORS[$loop_index]}${LIMITERS[1]}"
 done
 
 USER_HOSTNAME="${COLORS[7]}${COLORS[$USER_NAME_COLOR]}\u${COLORS[10]}${COLORS[7]}@${COLORS[$HOSTNAME_COLOR]}\h${COLORS[10]}"
@@ -74,31 +75,31 @@ HISTORY_COMMAND="${COLORS[7]}[${COLORS[10]}!\!${COLORS[7]}|${COLORS[10]}#\#${COL
 
 # build the function that will print the color base on the successfulness of the previous command
 get_color() {
-    if [ "$SUCCESS_CODE" = "0" ]; then
-        printf "%b" "${COLORS[$COMMAND_CODE_GOOD_COLOR]}"
-    else
-        printf "%b" "${COLORS[$COMMAND_CODE_BAD_COLOR]}"
-    fi
+	if [ "$SUCCESS_CODE" = "0" ]; then
+		printf "%b" "${COLORS[$COMMAND_CODE_GOOD_COLOR]}"
+	else
+		printf "%b" "${COLORS[$COMMAND_CODE_BAD_COLOR]}"
+	fi
 }
 
 # function to print the success code
 print_success() {
-    printf "%s" "$SUCCESS_CODE"
+	printf "%s" "$SUCCESS_CODE"
 }
 
 # build the function that will show the git information if the command in present
 maybe_git() {
-    # git command name
-    GIT_COMMAND="__git_ps1"
-    GIT_COMMAND_STRING_INPUT="%s"
+	# git command name
+	GIT_COMMAND="__git_ps1"
+	GIT_COMMAND_STRING_INPUT="%s"
 
-    # check if the command exists and if exists print it
-    if type "$GIT_COMMAND" &> /dev/null; then
-        printf "%s" " "
-        "$GIT_COMMAND" "${COLORS[7]}[${COLORS[$GIT_COLOR]}$GIT_COMMAND_STRING_INPUT${COLORS[10]}${COLORS[7]}]${COLORS[10]} "
-    else
-        printf "%s" " "
-    fi
+	# check if the command exists and if exists print it
+	if type "$GIT_COMMAND" &> /dev/null; then
+		printf "%s" " "
+		"$GIT_COMMAND" "${COLORS[7]}[${COLORS[$GIT_COLOR]}$GIT_COMMAND_STRING_INPUT${COLORS[10]}${COLORS[7]}]${COLORS[10]} "
+	else
+		printf "%s" " "
+	fi
 }
 
 # build the success tab
