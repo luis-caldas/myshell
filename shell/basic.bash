@@ -24,6 +24,10 @@ export HISTFILE="${HOME}""/.cache/.bash_history"
 # vim as preferred editor
 export EDITOR="vim"
 
+# tmux aliases
+alias na='tmux a'
+alias nat='tmux a -t'
+
 # add the color aliases
 alias ls='ls --group-directories-first --color=auto'
 alias grep='grep --color=auto'
