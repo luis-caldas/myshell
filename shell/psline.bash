@@ -27,6 +27,8 @@ RAW_COLORS=(
 USER_NAME_COLOR=1
 HOSTNAME_COLOR=2
 DIRECTORY_COLOR=5
+TIME_DATE_COLOR=2
+TIME_LINE_COLOR=1
 GIT_COLOR=4
 COMMAND_CODE_GOOD_COLOR=1
 COMMAND_CODE_BAD_COLOR=0
@@ -102,6 +104,21 @@ maybe_git() {
 	fi
 }
 
+# build the date line
+TIME_DATE="${COLORS[7]}${COLORS[$TIME_DATE_COLOR]}$(date +"%Y/%m/%d")${COLORS[10]}"
+
+# build the time line
+TIME_TIME="${COLORS[7]}${COLORS[$TIME_LINE_COLOR]}$(date +"%H:%M:%S")${COLORS[10]}"
+
+# buid the date brackets
+TIME_DATE_LINE="${COLORS[7]}[${COLORS[10]}$TIME_DATE${COLORS[7]}]${COLORS[10]}"
+
+# build the time brackets
+TIME_LINE="${COLORS[7]}[${COLORS[10]}$TIME_TIME${COLORS[7]}]${COLORS[10]}"
+
+# build the whole time line
+TIME="$TIME_DATE_LINE $TIME_LINE"
+
 # build the success tab
 SUCCESSFULNESS="${COLORS[7]}[${COLORS[10]}\$(get_color)\$(print_success)${COLORS[10]}${COLORS[7]}]${COLORS[10]}"
 
@@ -118,7 +135,7 @@ COMMAND_LINE_PS2="${COLORS[7]}  >${COLORS[10]} "
 PROMPT_COMMAND="SUCCESS_CODE=\$?"
 
 # final ps1 assignment
-PS1="$INFORMATION_LINE\n$COMMAND_LINE"
+PS1="$TIME\n$INFORMATION_LINE\n$COMMAND_LINE"
 
 # assign ps2 as well while we're at it
 PS2="$COMMAND_LINE_PS2"
