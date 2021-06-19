@@ -116,14 +116,14 @@ TIME_DATE_LINE="${COLORS[7]}[${COLORS[10]}$TIME_DATE${COLORS[7]}]${COLORS[10]}"
 # build the time brackets
 TIME_LINE="${COLORS[7]}[${COLORS[10]}$TIME_TIME${COLORS[7]}]${COLORS[10]}"
 
-# build the whole time line
-TIME="$TIME_DATE_LINE $TIME_LINE"
-
 # build the success tab
 SUCCESSFULNESS="${COLORS[7]}[${COLORS[10]}\$(get_color)\$(print_success)${COLORS[10]}${COLORS[7]}]${COLORS[10]}"
 
+# build the whole time line
+TIME="$TIME_DATE_LINE $TIME_LINE $SUCCESSFULNESS"
+
 # build the information line
-INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$SUCCESSFULNESS $BASH_SYMBOL_BOLD"
+INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$BASH_SYMBOL_BOLD"
 
 # build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLORS[7]}>${COLORS[10]} "
