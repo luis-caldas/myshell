@@ -92,15 +92,21 @@ print_success() {
 # build the function that will show the git information if the command in present
 maybe_git() {
 	# git command name
-	GIT_COMMAND="__git_ps1"
-	GIT_COMMAND_STRING_INPUT="%s"
+	GIT_COMMAND="git"
+
+	# print trailing space
+	printf "%s" " "
 
 	# check if the command exists and if exists print it
-	if type "$GIT_COMMAND" &> /dev/null; then
-		printf "%s" " "
-		"$GIT_COMMAND" "${COLORS[7]}[${COLORS[$GIT_COLOR]}$GIT_COMMAND_STRING_INPUT${COLORS[10]}${COLORS[7]}]${COLORS[10]} "
-	else
-		printf "%s" " "
+	if type "${GIT_COMMAND}" &> /dev/null; then
+
+		# Extract name of the branch
+		GIT_RESULT="$("$GIT_COMMAND" branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
+
+		if [ -n "$GIT_RESULT" ]; then
+			printf "${COLORS[7]}[${COLORS[$GIT_COLOR]}$GIT_RESULT${COLORS[10]}${COLORS[7]}]${COLORS[10]} "
+		fi
+
 	fi
 }
 
