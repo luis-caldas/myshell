@@ -28,6 +28,9 @@ export EDITOR="vim"
 alias na='tmux a'
 alias nat='tmux a -t'
 
+# xinit aliases
+alias nk='pkill xinit'
+
 # add the color aliases
 alias ls='ls --group-directories-first --color=auto'
 alias grep='grep --color=auto'
