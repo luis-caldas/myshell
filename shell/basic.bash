@@ -29,7 +29,7 @@ alias na='tmux a'
 alias nat='tmux a -t'
 
 # xinit aliases
-alias nk='pkill xinit'
+alias neok='pkill xinit'
 
 # add the color aliases
 alias ls='ls --group-directories-first --color=auto'
