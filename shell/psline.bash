@@ -207,7 +207,7 @@ build_ps1_start() {
 	# check if we are on a ssh connection
 	if [ -n "$SSH_CLIENT" ]; then
 		# execute the ssh line function
-		ssh_line_text="$(ssh_line)\n"
+		ssh_line_text="\n$(ssh_line)"
 	fi
 
 	# join the ssh and time exec to the start ps1
@@ -267,7 +267,8 @@ PS2="$COMMAND_LINE_PS2"
 
 # cleanup files on shm
 function run_on_exit (){
-	rm "/dev/shm/${USER}.bashtime.${ROOT_PID}"
+
+	[ -e "$BASH_ID_FILE_PATH" ] && rm "$BASH_ID_FILE_PATH"
 }
 trap run_on_exit EXIT
 
