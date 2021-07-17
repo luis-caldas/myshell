@@ -188,7 +188,7 @@ build_ps1_start() {
 		stop_time_line_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$stop_time_line${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 		# reasign for ease of use
-		time_exec="\n$stop_time_line_brackets\n"
+		time_exec="$stop_time_line_brackets\n"
 
 	fi
 
@@ -254,7 +254,7 @@ COMMAND_LINE_PS2="${COLOURS[7]}  >${COLOURS[10]} "
 # {{{ Final Assignments
 
 # add time counter to PS0
-PS0="\$(start_time_ps ""$ROOT_PID"")\n"
+PS0="\$(start_time_ps ""$ROOT_PID"")"
 
 # the save the success code
 PROMPT_COMMAND="SUCCESS_CODE=\$?"
