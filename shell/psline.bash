@@ -119,14 +119,14 @@ ssh_line() {
 	port="$(awk '{ print $3 }' <<< "$SSH_CLIENT")"
 
 	# create the proper parts of the line
-	warning_part="${COLOURS[7]}${COLOURS[$SSH_WARNING_COLOUR]}$SSH_MESSAGE${COLOURS[10]}"
-	domain_part="${COLOURS[7]}${COLOURS[$SSH_DOMAIN_COLOUR]}$domain${COLOURS[10]}"
-	port_part="${COLOURS[7]}${COLOURS[$SSH_PORT_COLOUR]}$port${COLOURS[10]}"
+	warning_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_WARNING_COLOUR]}$SSH_MESSAGE${COLOURS_ECHO[10]}"
+	domain_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}$domain${COLOURS_ECHO[10]}"
+	port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}$port${COLOURS_ECHO[10]}"
 
 	# build the brackets around the data
-	warning_part_brackets="${COLOURS[7]}[${COLOURS[10]}$warning_part${COLOURS[7]}]${COLOURS[10]}"
-	domain_part_brackets="${COLOURS[7]}[${COLOURS[10]}$domain_part${COLOURS[7]}]${COLOURS[10]}"
-	port_part_brackets="${COLOURS[7]}[${COLOURS[10]}$port_part${COLOURS[7]}]${COLOURS[10]}"
+	warning_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$warning_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	domain_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$domain_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$port_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# join all the parts together
 	ssh_line_data="$warning_part_brackets $domain_part_brackets $port_part_brackets"
@@ -204,19 +204,16 @@ build_ps1_start() {
 	# build the whole time line
 	time_line="$time_date_line $time_clock $successfulness"
 
+	# check if we are on a ssh connection
+	if [ -n "$SSH_CLIENT" ]; then
+		# execute the ssh line function
+		ssh_line_text="$(ssh_line)\n"
+	fi
+
 	# join the ssh and time exec to the start ps1
-	printf "%b" "$time_exec$time_line"
+	printf "%b" "$time_exec$time_line$ssh_line_text"
 
 }
-
-# }}}
-# {{{ Post function creation
-
-# check if we are on a ssh connection
-if [ -n "$SSH_CLIENT" ]; then
-	# execute the ssh line function
-	SSH_LINE="$(ssh_line)\n"
-fi
 
 # }}}
 # {{{ General colours for PS1
@@ -263,7 +260,7 @@ PS0="\$(start_time_ps ""$ROOT_PID"")"
 PROMPT_COMMAND="SUCCESS_CODE=\$?"
 
 # final ps1 assignment
-PS1="\$(build_ps1_start)\n$SSH_LINE$INFORMATION_LINE\n$COMMAND_LINE"
+PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE"
 
 # assign ps2 as well while we're at it
 PS2="$COMMAND_LINE_PS2"
