@@ -69,12 +69,6 @@ for (( loop_index = 0; loop_index <= ${#RAW_COLOURS[@]} + 1; loop_index++ )); do
 	COLOURS_ECHO[$loop_index]="${LIMITERS_ECHO[0]}${RAW_COLOURS[$loop_index]}${LIMITERS_ECHO[1]}"
 done
 
-# check if we are on a ssh connection
-if [ -n "$SSH_CLIENT" ]; then
-	# execute the ssh line function
-	SSH_LINE="$(ssh_line)\n"
-fi
-
 # id assignment and file path creation
 ROOT_PID="$BASHPID"
 BASH_ID_FILE_PATH="/dev/shm/${USER}.bashtime.${ROOT_PID}"
@@ -214,6 +208,15 @@ build_ps1_start() {
 	printf "%b" "$time_exec$time_line"
 
 }
+
+# }}}
+# {{{ Post function creation
+
+# check if we are on a ssh connection
+if [ -n "$SSH_CLIENT" ]; then
+	# execute the ssh line function
+	SSH_LINE="$(ssh_line)\n"
+fi
 
 # }}}
 # {{{ General colours for PS1
