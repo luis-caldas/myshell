@@ -143,7 +143,7 @@ round_seconds (){
 	start_nr="${1}"
 
 	# rounds a number to 3 decimal places
-	time_difference="$(echo "$end_nr - $start_nr" | bc)"
+	time_difference="$(awk '{print $1-$2}' <<< "$end_nr $start_nr")"
 
 	# split into integer and float parts
 	time_integer="$(echo "$time_difference" | cut -d. -f1)"
