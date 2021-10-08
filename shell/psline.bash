@@ -242,7 +242,7 @@ BASH_VERSION="${COLOURS[7]}[${COLOURS[10]}\V${COLOURS[7]}]${COLOURS[10]}"
 #HISTORY_COMMAND="${COLOURS[7]}[${COLOURS[10]}!\!${COLOURS[7]}|${COLOURS[10]}#\#${COLOURS[7]}]${COLOURS[10]}"
 
 # build the information line
-INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB$(maybe_git)$BASH_SYMBOL_BOLD"
+INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$BASH_SYMBOL_BOLD"
 
 # build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLOURS[7]}>${COLOURS[10]} "
@@ -266,8 +266,7 @@ PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE"
 PS2="$COMMAND_LINE_PS2"
 
 # cleanup files on shm
-function run_on_exit (){
-
+function run_on_exit () {
 	[ -e "$BASH_ID_FILE_PATH" ] && rm "$BASH_ID_FILE_PATH"
 }
 trap run_on_exit EXIT
