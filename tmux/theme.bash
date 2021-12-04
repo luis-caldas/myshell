@@ -7,7 +7,7 @@
 
 # Also creates the theme based on the tmux version
 
-# {{{ Config #
+# {{{ Config
 
 # blocks of data that appear on TMUX
 t_block_l_l="#S"
@@ -150,7 +150,7 @@ if [[ $colours_supported == "256" ]]; then
     export tmux_theme_window_status_current_fg="$t_c_grey_7"
 
     # bolding of the blocks of the tmux theme
-    t_bold_l_l="bold" 
+    t_bold_l_l="bold"
     t_bold_l_m="nobold"
     t_bold_l_r="nobold"
     t_bold_m="nobold"
@@ -195,7 +195,7 @@ else
     export tmux_theme_window_status_current_fg="$t_black"
 
     # bolding of the blocks of the tmux theme
-    t_bold_l_l="nobold" 
+    t_bold_l_l="nobold"
     t_bold_l_m="nobold"
     t_bold_l_r="nobold"
     t_bold_m="nobold"
