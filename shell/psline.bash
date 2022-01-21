@@ -115,21 +115,30 @@ maybe_git() {
 ssh_line() {
 
 	# extract data from the ssh variable
-	domain="$(awk '{ print $1 }' <<< "$SSH_CLIENT")"
-	port="$(awk '{ print $3 }' <<< "$SSH_CLIENT")"
+	client_ip="$(awk '{ print $1 }' <<< "$SSH_CONNECTION")"
+	server_ip="$(awk '{ print $3 }' <<< "$SSH_CONNECTION")"
+	client_port="$(awk '{ print $2 }' <<< "$SSH_CONNECTION")"
+	server_port="$(awk '{ print $4 }' <<< "$SSH_CONNECTION")"
 
 	# create the proper parts of the line
 	warning_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_WARNING_COLOUR]}$SSH_MESSAGE${COLOURS_ECHO[10]}"
-	domain_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}$domain${COLOURS_ECHO[10]}"
-	port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}$port${COLOURS_ECHO[10]}"
+	client_ip_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}${client_ip}${COLOURS_ECHO[10]}"
+	server_ip_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}${server_ip}${COLOURS_ECHO[10]}"
+	client_port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}${client_port}${COLOURS_ECHO[10]}"
+	server_port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}${server_port}${COLOURS_ECHO[10]}"
 
 	# build the brackets around the data
 	warning_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$warning_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
-	domain_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$domain_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
-	port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$port_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+
+	arrow_part="${COLOURS_ECHO[7]}->${COLOURS_ECHO[10]}"
+
+	client_ip_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${client_ip_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	server_ip_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${server_ip_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	client_port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${client_port_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	server_port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${server_port_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# join all the parts together
-	ssh_line_data="$warning_part_brackets $domain_part_brackets $port_part_brackets"
+	ssh_line_data="$warning_part_brackets $client_ip_part_brackets $client_port_part_brackets $arrow_part $server_ip_part_brackets $server_port_part_brackets"
 
 	# return the ssh line
 	echo "$ssh_line_data"
@@ -205,7 +214,7 @@ build_ps1_start() {
 	time_line="$time_date_line $time_clock $successfulness"
 
 	# check if we are on a ssh connection
-	if [ -n "$SSH_CLIENT" ]; then
+	if [ -n "$SSH_CONNECTION" ]; then
 		# execute the ssh line function
 		ssh_line_text="\n$(ssh_line)"
 	fi
