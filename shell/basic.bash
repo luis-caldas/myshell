@@ -34,6 +34,9 @@ alias grep='grep --color=auto'
 alias resw='nixos-rebuild switch --option tarball-ttl 0'
 alias sresw='sudo nixos-rebuild switch --option tarball-ttl 0'
 
+# clock
+alias clock='tty-clock -c -b -s'
+
 # alias python http server to a simpler command
 alias phttpd='python -m SimpleHTTPServer'
 
