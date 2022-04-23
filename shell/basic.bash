@@ -31,8 +31,14 @@ alias ls='ls --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 
 # some nixos aliases
+alias reb='nixos-rebuild boot --option tarball-ttl 0'
+alias rebu='nixos-rebuild boot --upgrade --option tarball-ttl 0'
+alias sreb='sudo nixos-rebuild boot --option tarball-ttl 0'
+alias srebu='sudo nixos-rebuild boot --upgrade --option tarball-ttl 0'
 alias resw='nixos-rebuild switch --option tarball-ttl 0'
+alias reswu='nixos-rebuild switch --upgrade --option tarball-ttl 0'
 alias sresw='sudo nixos-rebuild switch --option tarball-ttl 0'
+alias sreswu='sudo nixos-rebuild switch --upgrade --option tarball-ttl 0'
 
 # clock
 alias clock='tty-clock -c -b -s'
