@@ -22,6 +22,9 @@ export HISTFILE="${HOME}""/.cache/.bash_history"
 # vim as preferred editor
 export EDITOR="vim"
 
+# nix-shell force to use own ps1 line
+export NIX_SHELL_PRESERVE_PROMPT="1"
+
 # tmux aliases
 alias na='tmux a'
 alias nat='tmux a -t'

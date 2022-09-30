@@ -44,6 +44,7 @@ SSH_PORT_COLOUR=1
 EXECUTION_TIME_COLOUR=1
 COMMAND_CODE_GOOD_COLOUR=1
 COMMAND_CODE_BAD_COLOUR=0
+NIX_COLOUR=1
 BASH_SYMBOL="$"
 
 # variables that change for root
@@ -145,7 +146,18 @@ ssh_line() {
 
 }
 
-round_seconds (){
+nix_check() {
+	if [ -n "$IN_NIX_SHELL" ]; then
+		# build the nix info line
+		nix_info="${COLOURS_ECHO[7]}${COLOURS_ECHO[$NIX_COLOUR]}nix-shell${COLOURS_ECHO[10]}"
+		# create full block
+		nix_block=" ${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$nix_info${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+		# echo the info back
+		echo "$nix_block"
+	fi
+}
+
+round_seconds() {
 
 	# variable reasignment
 	end_nr="${2}"
@@ -211,7 +223,7 @@ build_ps1_start() {
 	successfulness="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$(get_color)$(print_success)${COLOURS_ECHO[10]}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# build the whole time line
-	time_line="$time_date_line $time_clock $successfulness"
+	time_line="$time_date_line $time_clock $successfulness$(nix_check)"
 
 	# check if we are on a ssh connection
 	if [ -n "$SSH_CONNECTION" ]; then
