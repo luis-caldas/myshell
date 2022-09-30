@@ -151,9 +151,9 @@ nix_check() {
 		# build the nix info line
 		nix_info="${COLOURS_ECHO[7]}${COLOURS_ECHO[$NIX_COLOUR]}nix-shell${COLOURS_ECHO[10]}"
 		# create full block
-		nix_block=" ${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$nix_info${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
-		# echo the info back
-		echo "$nix_block"
+		nix_block="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$nix_info${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+		# echo the info back with space at the end
+		echo -e "$nix_block "
 	fi
 }
 
@@ -223,7 +223,7 @@ build_ps1_start() {
 	successfulness="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$(get_color)$(print_success)${COLOURS_ECHO[10]}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# build the whole time line
-	time_line="$time_date_line $time_clock $successfulness$(nix_check)"
+	time_line="$time_date_line $time_clock $successfulness"
 
 	# check if we are on a ssh connection
 	if [ -n "$SSH_CONNECTION" ]; then
@@ -263,7 +263,7 @@ BASH_VERSION="${COLOURS[7]}[${COLOURS[10]}\V${COLOURS[7]}]${COLOURS[10]}"
 #HISTORY_COMMAND="${COLOURS[7]}[${COLOURS[10]}!\!${COLOURS[7]}|${COLOURS[10]}#\#${COLOURS[7]}]${COLOURS[10]}"
 
 # build the information line
-INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)$BASH_SYMBOL_BOLD"
+INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)\$(nix_check)$BASH_SYMBOL_BOLD"
 
 # build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLOURS[7]}>${COLOURS[10]} "
