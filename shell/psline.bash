@@ -3,35 +3,35 @@
 # {{{ Colours
 
 ######################################################
-# a simple ps1 line for a good looking bash terminal #
+# A simple ps1 line for a good looking bash terminal #
 ######################################################
 
-# create the color array using tput
+# Create the color array using tput
 RAW_COLOURS=(
-	"$(tput setaf 1)"  # red         0
-	"$(tput setaf 2)"  # green       1
-	"$(tput setaf 3)"  # yellow      2
-	"$(tput setaf 4)"  # blue        3
-	"$(tput setaf 5)"  # purple      4
-	"$(tput setaf 6)"  # cyan        5
-	"$(tput setaf 7)"  # gray        6
-	"$(tput bold)"     # bold        7
-	"$(tput smul)"     # underlined  8
-	"$(tput blink)"    # blinking    9
-	"$(tput sgr0)"     # reset       10
+	"$(tput setaf 1)"  # Red         0
+	"$(tput setaf 2)"  # Green       1
+	"$(tput setaf 3)"  # Yellow      2
+	"$(tput setaf 4)"  # Blue        3
+	"$(tput setaf 5)"  # Purple      4
+	"$(tput setaf 6)"  # Cyan        5
+	"$(tput setaf 7)"  # Gray        6
+	"$(tput bold)"     # Bold        7
+	"$(tput smul)"     # Underlined  8
+	"$(tput blink)"    # Blinking    9
+	"$(tput sgr0)"     # Reset       10
 )
 
 # }}}
 # {{{ Globals
 
 ####################
-# global variables #
+# Global variables #
 ####################
 
-# normal naming variable
+# Normal naming variable
 SSH_MESSAGE="SSH Connection"
 
-# colors in numbers
+# Colors in numbers
 USER_NAME_COLOUR=1
 HOSTNAME_COLOUR=2
 DIRECTORY_COLOUR=5
@@ -47,7 +47,7 @@ COMMAND_CODE_BAD_COLOUR=0
 NIX_COLOUR=1
 BASH_SYMBOL="$"
 
-# variables that change for root
+# Variables that change for root
 if [[ $EUID -eq 0 ]]; then
 	OLD_USER_NAME=$USER_NAME_COLOUR
 	USER_NAME_COLOUR=$HOSTNAME_COLOUR
@@ -60,24 +60,24 @@ fi
 # }}}
 # {{{ Pre Script
 
-# characters to help count the non printing characters
+# Characters to help count the non printing characters
 LIMITERS=( "\001" "\002" )
 LIMITERS_ECHO=( "\x01" "\x02" )
 
-# iterate over the raw colors and add the limiters
+# Iterate over the raw colors and add the limiters
 for (( loop_index = 0; loop_index <= ${#RAW_COLOURS[@]} + 1; loop_index++ )); do
 	COLOURS[$loop_index]="${LIMITERS[0]}${RAW_COLOURS[$loop_index]}${LIMITERS[1]}"
 	COLOURS_ECHO[$loop_index]="${LIMITERS_ECHO[0]}${RAW_COLOURS[$loop_index]}${LIMITERS_ECHO[1]}"
 done
 
-# id assignment and file path creation
+# Id assignment and file path creation
 ROOT_PID="$BASHPID"
 BASH_ID_FILE_PATH="/dev/shm/${USER}.bashtime.${ROOT_PID}"
 
 # }}}
 # {{{ Dynamic functions (ran at each time the line updates)
 
-# build the function that will print the color base on the successfulness of the previous command
+# Build the function that will print the color base on the successfulness of the previous command
 get_color() {
 	if [ "$SUCCESS_CODE" = "0" ]; then
 		printf "%b" "${COLOURS[$COMMAND_CODE_GOOD_COLOUR]}"
@@ -86,20 +86,20 @@ get_color() {
 	fi
 }
 
-# function to print the success code
+# Function to print the success code
 print_success() {
 	printf "%s" "$SUCCESS_CODE"
 }
 
-# build the function that will show the git information if the command in present
+# Build the function that will show the git information if the command in present
 maybe_git() {
-	# git command name
+	# Git command name
 	GIT_COMMAND="git"
 
-	# print trailing space
+	# Print trailing space
 	printf "%s" " "
 
-	# check if the command exists and if exists print it
+	# Check if the command exists and if exists print it
 	if type "${GIT_COMMAND}" &> /dev/null; then
 
 		# Extract name of the branch
@@ -112,23 +112,23 @@ maybe_git() {
 	fi
 }
 
-# generate the shell line if we are on a ssh connection
+# Generate the shell line if we are on a ssh connection
 ssh_line() {
 
-	# extract data from the ssh variable
+	# Extract data from the ssh variable
 	client_ip="$(awk '{ print $1 }' <<< "$SSH_CONNECTION")"
 	server_ip="$(awk '{ print $3 }' <<< "$SSH_CONNECTION")"
 	client_port="$(awk '{ print $2 }' <<< "$SSH_CONNECTION")"
 	server_port="$(awk '{ print $4 }' <<< "$SSH_CONNECTION")"
 
-	# create the proper parts of the line
+	# Create the proper parts of the line
 	warning_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_WARNING_COLOUR]}$SSH_MESSAGE${COLOURS_ECHO[10]}"
 	client_ip_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}${client_ip}${COLOURS_ECHO[10]}"
 	server_ip_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_DOMAIN_COLOUR]}${server_ip}${COLOURS_ECHO[10]}"
 	client_port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}${client_port}${COLOURS_ECHO[10]}"
 	server_port_part="${COLOURS_ECHO[7]}${COLOURS_ECHO[$SSH_PORT_COLOUR]}${server_port}${COLOURS_ECHO[10]}"
 
-	# build the brackets around the data
+	# Build the brackets around the data
 	warning_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$warning_part${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	arrow_part="${COLOURS_ECHO[7]}->${COLOURS_ECHO[10]}"
@@ -138,51 +138,51 @@ ssh_line() {
 	client_port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${client_port_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 	server_port_part_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}${server_port_part}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
-	# join all the parts together
+	# Join all the parts together
 	ssh_line_data="$warning_part_brackets $client_ip_part_brackets $client_port_part_brackets $arrow_part $server_ip_part_brackets $server_port_part_brackets"
 
-	# return the ssh line
+	# Return the ssh line
 	echo "$ssh_line_data"
 
 }
 
 nix_check() {
 	if [ -n "$IN_NIX_SHELL" ]; then
-		# build the nix info line
+		# Build the nix info line
 		nix_info="${COLOURS_ECHO[7]}${COLOURS_ECHO[$NIX_COLOUR]}nix-shell${COLOURS_ECHO[10]}"
-		# create full block
+		# Create full block
 		nix_block="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$nix_info${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
-		# echo the info back with space at the end
+		# Echo the info back with space at the end
 		echo -e "$nix_block "
 	fi
 }
 
 round_seconds() {
 
-	# variable reasignment
+	# Variable reassignment
 	end_nr="${2}"
 	start_nr="${1}"
 
-	# rounds a number to 3 decimal places
+	# Rounds a number to 3 decimal places
 	time_difference="$(awk '{print $1-$2}' <<< "$end_nr $start_nr")"
 
-	# split into integer and float parts
+	# Split into integer and float parts
 	time_integer="$(echo "$time_difference" | cut -d. -f1)"
 	time_float="$(echo "$time_difference" | cut -d. -f2 | head -c 8)"
 
-	# return the number formatted
+	# Return the number formatted
 	printf "%d.%s" "$time_integer" "$time_float"
 
 }
 
 start_time_ps (){
-	# places the epoch time in ns into shared memory
+	# Places the epoch time in ns into shared memory
 	date +%s.%N > "$BASH_ID_FILE_PATH"
 }
 
 stop_time_ps (){
 
-	# reads stored epoch time and subtracts from current
+	# Reads stored epoch time and subtracts from current
 	end_time="$(date +%s.%N)"
 	start_time="$(cat "$BASH_ID_FILE_PATH")"
 	round_seconds "$start_time" "$end_time"
@@ -190,48 +190,48 @@ stop_time_ps (){
 }
 
 # PS1 builder function so newlines can be added as needed
-# and not controlled by command substitutions
+# And not controlled by command substitutions
 build_ps1_start() {
 
-	# check if we are running for the first time
+	# Check if we are running for the first time
 	if [ -f "$BASH_ID_FILE_PATH" ]; then
 
-		# stop time line
+		# Stop time line
 		stop_time_line="${COLOURS_ECHO[7]}${COLOURS_ECHO[$EXECUTION_TIME_COLOUR]}$(stop_time_ps "$ROOT_PID")${COLOURS_ECHO[10]}"
 
-		# build the stop time line with the brackets
+		# Build the stop time line with the brackets
 		stop_time_line_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$stop_time_line${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
-		# reasign for ease of use
+		# Reassign for ease of use
 		time_exec="$stop_time_line_brackets\n"
 
 	fi
 
-	# build the date line
+	# Build the date line
 	time_date="${COLOURS_ECHO[7]}${COLOURS_ECHO[$TIME_DATE_COLOUR]}$(date +"%Y/%m/%d")${COLOURS_ECHO[10]}"
 
-	# build the time line
+	# Build the time line
 	time_time="${COLOURS_ECHO[7]}${COLOURS_ECHO[$TIME_LINE_COLOUR]}$(date +"%H:%M:%S")${COLOURS_ECHO[10]}"
 
-	# buid the date brackets
+	# Build the date brackets
 	time_date_line="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$time_date${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
-	# build the time brackets
+	# Build the time brackets
 	time_clock="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$time_time${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
-	# build the success tab
+	# Build the success tab
 	successfulness="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$(get_color)$(print_success)${COLOURS_ECHO[10]}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
-	# build the whole time line
+	# Build the whole time line
 	time_line="$time_date_line $time_clock $successfulness"
 
-	# check if we are on a ssh connection
+	# Check if we are on a ssh connection
 	if [ -n "$SSH_CONNECTION" ]; then
-		# execute the ssh line function
+		# Execute the ssh line function
 		ssh_line_text="\n$(ssh_line)"
 	fi
 
-	# join the ssh and time exec to the start ps1
+	# Join the ssh and time exec to the start ps1
 	printf "%b" "$time_exec$time_line$ssh_line_text"
 
 }
@@ -241,28 +241,28 @@ build_ps1_start() {
 
 USER_HOSTNAME="${COLOURS[7]}${COLOURS[$USER_NAME_COLOUR]}\u${COLOURS[10]}${COLOURS[7]}@${COLOURS[$HOSTNAME_COLOUR]}\h${COLOURS[10]}"
 
-# dir in which the bash is
+# Dir in which the bash is
 DIR_NOW="${COLOURS[7]}${COLOURS[$DIRECTORY_COLOUR]}\w${COLOURS[10]}"
 
-# bash symbol
+# Bash symbol
 BASH_SYMBOL_BOLD="${COLOURS[7]}$BASH_SYMBOL${COLOURS[10]}"
 
-# create the directory tab
+# Create the directory tab
 DIRECTORY_TAB="${COLOURS[7]}[${COLOURS[10]}$DIR_NOW${COLOURS[7]}]${COLOURS[10]}"
 
-# build the power combo
+# Build the power combo
 POWER_COMBO="${COLOURS[7]}[${COLOURS[10]}$USER_HOSTNAME${COLOURS[7]}]${COLOURS[10]}"
 
-# build the jobs tab
+# Build the jobs tab
 #JOBS_INFO="${COLOURS[7]}[${COLOURS[10]}\j${COLOURS[7]}]${COLOURS[10]}"
 
-# build the bash version tab
+# Build the bash version tab
 BASH_VERSION="${COLOURS[7]}[${COLOURS[10]}\V${COLOURS[7]}]${COLOURS[10]}"
 
-# build the history and command number tab
+# Build the history and command number tab
 #HISTORY_COMMAND="${COLOURS[7]}[${COLOURS[10]}!\!${COLOURS[7]}|${COLOURS[10]}#\#${COLOURS[7]}]${COLOURS[10]}"
 
-# build the information line
+# Build the information line
 INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)\$(nix_check)$BASH_SYMBOL_BOLD"
 
 # build the line in which the command will be executed
