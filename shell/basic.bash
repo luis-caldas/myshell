@@ -19,6 +19,10 @@ tput smkx
 export HISTCONTROL=ignoreboth
 # Change the local of the history file
 export HISTFILE="${HOME}""/.local/state/bash/history"
+# Create the folder for the history if not already present
+if [[ ! -e "$(dirname "$HISTFILE")" ]]; then
+	mkdir -p "$(dirname "$HISTFILE")"
+fi
 # Sizing of the history
 export HISTSIZE=1000000000
 export HISTFILESIZE="$(( HISTSIZE * 1000 ))"
