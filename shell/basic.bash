@@ -2,6 +2,9 @@
 
 # Simple bash configurations
 
+# My umask
+umask 0077  # Only user has permissions, also no special bits
+
 # Aliases to my preferred configurations
 alias flush='history -c; history -w'
 alias grip='grip --user=$GIT_API_EMAIL --pass=$GIT_API_KEY --quiet'
