@@ -2,11 +2,11 @@
 
 # {{{ Colours
 
-######################################################
-# A simple ps1 line for a good looking bash terminal #
-######################################################
+##############################
+# A simple PS? line for BASH #
+##############################
 
-# Create the color array using tput
+# Create the color array
 RAW_COLOURS=(
 	"$(tput setaf 1)"  # Red         0
 	"$(tput setaf 2)"  # Green       1
@@ -19,6 +19,12 @@ RAW_COLOURS=(
 	"$(tput smul)"     # Underlined  8
 	"$(tput blink)"    # Blinking    9
 	"$(tput sgr0)"     # Reset       10
+)
+_TMP_TERM="xterm-pcolor"
+# Set the delimiters for setting the title
+TITLE_DELIMITERS=(
+  "$(TERM="$_TMP_TERM" tput tsl)"      # Title       0
+  "$(TERM="$_TMP_TERM" tput fsl)"      # Title End   1
 )
 
 # }}}
@@ -63,6 +69,7 @@ fi
 # Characters to help count the non printing characters
 LIMITERS=( "\001" "\002" )
 LIMITERS_ECHO=( "\x01" "\x02" )
+HIDERS=( "\[" "\]" )
 
 # Iterate over the raw colors and add the limiters
 for (( loop_index = 0; loop_index <= ${#RAW_COLOURS[@]} + 1; loop_index++ )); do
@@ -265,28 +272,32 @@ BASH_VERSION="${COLOURS[7]}[${COLOURS[10]}\V${COLOURS[7]}]${COLOURS[10]}"
 # Build the information line
 INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)\$(nix_check)$BASH_SYMBOL_BOLD"
 
-# build the line in which the command will be executed
+# Build the line in which the command will be executed
 COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLOURS[7]}>${COLOURS[10]} "
 
-# command line for ps2
+# Command line for PS2
 COMMAND_LINE_PS2="${COLOURS[7]}  >${COLOURS[10]} "
+
+# Set the title
+SET_TITLE="${HIDERS[0]}${TITLE_DELIMITERS[0]}[\h] $BASH_SYMBOL \w${TITLE_DELIMITERS[1]}${HIDERS[1]}"
+# TODO add subtitle as path on gnome-console
 
 # }}}
 # {{{ Final Assignments
 
-# add time counter to PS0
+# Add time counter to PS0
 PS0="\$(start_time_ps ""$ROOT_PID"")"
 
 # the save the success code
 PROMPT_COMMAND="SUCCESS_CODE=\$?"
 
-# final ps1 assignment
-PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE"
+# Final PS1 assignment
+PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE$SET_TITLE"
 
-# assign ps2 as well while we're at it
+# Assign PS2 as well while we're at it
 PS2="$COMMAND_LINE_PS2"
 
-# cleanup files on shm
+# Cleanup files on SHM
 function run_on_exit () {
 	[ -e "$BASH_ID_FILE_PATH" ] && rm "$BASH_ID_FILE_PATH"
 }
