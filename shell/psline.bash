@@ -49,6 +49,7 @@ SSH_DOMAIN_COLOUR=2
 SSH_PORT_COLOUR=1
 EXECUTION_TIME_COLOUR=1
 COMMAND_CODE_GOOD_COLOUR=1
+COMMAND_CODE_WHAT_COLOUR=6
 COMMAND_CODE_BAD_COLOUR=0
 NIX_COLOUR=1
 BASH_SYMBOL="$"
@@ -73,8 +74,8 @@ HIDERS=( "\[" "\]" )
 
 # Iterate over the raw colors and add the limiters
 for (( loop_index = 0; loop_index <= ${#RAW_COLOURS[@]} + 1; loop_index++ )); do
-	COLOURS[$loop_index]="${LIMITERS[0]}${RAW_COLOURS[$loop_index]}${LIMITERS[1]}"
-	COLOURS_ECHO[$loop_index]="${LIMITERS_ECHO[0]}${RAW_COLOURS[$loop_index]}${LIMITERS_ECHO[1]}"
+	COLOURS[loop_index]="${LIMITERS[0]}${RAW_COLOURS[loop_index]}${LIMITERS[1]}"
+	COLOURS_ECHO[loop_index]="${LIMITERS_ECHO[0]}${RAW_COLOURS[loop_index]}${LIMITERS_ECHO[1]}"
 done
 
 # Id assignment and file path creation
@@ -84,18 +85,52 @@ BASH_ID_FILE_PATH="/dev/shm/${USER}.bashtime.${ROOT_PID}"
 # }}}
 # {{{ Dynamic functions (ran at each time the line updates)
 
-# Build the function that will print the color base on the successfulness of the previous command
-get_color() {
-	if [ "$SUCCESS_CODE" = "0" ]; then
-		printf "%b" "${COLOURS[$COMMAND_CODE_GOOD_COLOUR]}"
-	else
-		printf "%b" "${COLOURS[$COMMAND_CODE_BAD_COLOUR]}"
-	fi
-}
-
-# Function to print the success code
+# Function to print the success pipeline
 print_success() {
-	printf "%s" "$SUCCESS_CODE"
+
+  # Function to set colour based on the code
+  set_colour() {
+
+    # Reassign values
+    success_now="$1"
+
+    # Start the default colour
+    colour_now=''
+
+    # Set colour based on code
+    if [ "$success_now" = "0" ]; then
+      colour_now="${COLOURS[$COMMAND_CODE_GOOD_COLOUR]}"
+    elif [ "$success_now" -lt "64" ]; then
+      colour_now="${COLOURS[$COMMAND_CODE_WHAT_COLOUR]}"
+    else
+      colour_now="${COLOURS[$COMMAND_CODE_BAD_COLOUR]}"
+    fi
+
+    # Print error with its colours
+	  printf "%b%s%b" "$colour_now" "$success_now" "${COLOURS[10]}"
+
+  }
+
+  # Calculate the total of the array
+  total_codes="${#SUCCESS_CODES[@]}"
+
+  # Iterate over all the pipeline processes
+  index=0
+  while (( index < total_codes )); do
+
+    # Print code with defined colour
+    set_colour "${SUCCESS_CODES[index]}"
+
+    # Add separator if needed
+    if (( index < ( total_codes - 1 ) )); then
+      printf "%b|%b" "${COLOURS_ECHO[7]}" "${COLOURS_ECHO[10]}"
+    fi
+
+    # Add to index
+    index=$(( index + 1 ))
+
+  done
+
 }
 
 # Build the function that will show the git information if the command in present
@@ -227,7 +262,7 @@ build_ps1_start() {
 	time_clock="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$time_time${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# Build the success tab
-	successfulness="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$(get_color)$(print_success)${COLOURS_ECHO[10]}${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
+	successfulness="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$(print_success)${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
 
 	# Build the whole time line
 	time_line="$time_date_line $time_clock $successfulness"
@@ -289,7 +324,7 @@ SET_TITLE="${HIDERS[0]}${TITLE_DELIMITERS[0]}[\h] $BASH_SYMBOL \w${TITLE_DELIMIT
 PS0="\$(start_time_ps ""$ROOT_PID"")"
 
 # the save the success code
-PROMPT_COMMAND="SUCCESS_CODE=\$?"
+PROMPT_COMMAND="SUCCESS_CODES=(\"\${PIPESTATUS[@]}\")"
 
 # Final PS1 assignment
 PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE$SET_TITLE"
