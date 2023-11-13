@@ -53,6 +53,7 @@ COMMAND_CODE_WHAT_COLOUR=6
 COMMAND_CODE_BAD_COLOUR=0
 NIX_COLOUR=1
 BASH_SYMBOL="$"
+ARROW_SYMBOL=">"
 
 # Variables that change for root
 if [[ $EUID -eq 0 ]]; then
@@ -78,9 +79,13 @@ for (( loop_index = 0; loop_index <= ${#RAW_COLOURS[@]} + 1; loop_index++ )); do
 	COLOURS_ECHO[loop_index]="${LIMITERS_ECHO[0]}${RAW_COLOURS[loop_index]}${LIMITERS_ECHO[1]}"
 done
 
-# Id assignment and file path creation
-ROOT_PID="$BASHPID"
-BASH_ID_FILE_PATH="/dev/shm/${USER}.bashtime.${ROOT_PID}"
+# Timestamping information
+DATE_STRING="+%s%N"
+DECIMAL_PLACES="9"
+PRINT_DECIMAL="4"
+
+# Initialise time printing variable empty
+TIME_CALC=0
 
 # }}}
 # {{{ Dynamic functions (ran at each time the line updates)
@@ -205,41 +210,32 @@ round_seconds() {
 	end_nr="${2}"
 	start_nr="${1}"
 
-	# Rounds a number to 3 decimal places
-	time_difference="$(awk '{print $1-$2}' <<< "$end_nr $start_nr")"
+	# Do the calculation
+	time_difference="$(awk '{ printf("%010d\n", $1-$2) }' <<< "$end_nr $start_nr")"
 
 	# Split into integer and float parts
-	time_integer="$(echo "$time_difference" | cut -d. -f1)"
-	time_float="$(echo "$time_difference" | cut -d. -f2 | head -c 8)"
+	time_integer="${time_difference::-DECIMAL_PLACES}"
+	time_float="${time_difference: -DECIMAL_PLACES:PRINT_DECIMAL}"
 
 	# Return the number formatted
 	printf "%d.%s" "$time_integer" "$time_float"
 
 }
 
-start_time_ps (){
-	# Places the epoch time in ns into shared memory
-	date +%s.%N > "$BASH_ID_FILE_PATH"
-}
+show_time() {
 
-stop_time_ps (){
-
-	# Reads stored epoch time and subtracts from current
-	end_time="$(date +%s.%N)"
-	start_time="$(cat "$BASH_ID_FILE_PATH")"
-	round_seconds "$start_time" "$end_time"
+	# Just calculate with the known times
+	round_seconds "$START_TIME" "$EXIT_TIME"
 
 }
 
-# PS1 builder function so newlines can be added as needed
-# And not controlled by command substitutions
-build_ps1_start() {
+show_formatted_time() {
 
 	# Check if we are running for the first time
-	if [ -f "$BASH_ID_FILE_PATH" ]; then
+	if [ "$TIME_CALC" -eq "1" ]; then
 
 		# Stop time line
-		stop_time_line="${COLOURS_ECHO[7]}${COLOURS_ECHO[$EXECUTION_TIME_COLOUR]}$(stop_time_ps "$ROOT_PID")${COLOURS_ECHO[10]}"
+		stop_time_line="${COLOURS_ECHO[7]}${COLOURS_ECHO[$EXECUTION_TIME_COLOUR]}$(show_time)${COLOURS_ECHO[10]}"
 
 		# Build the stop time line with the brackets
 		stop_time_line_brackets="${COLOURS_ECHO[7]}[${COLOURS_ECHO[10]}$stop_time_line${COLOURS_ECHO[7]}]${COLOURS_ECHO[10]}"
@@ -248,6 +244,14 @@ build_ps1_start() {
 		time_exec="$stop_time_line_brackets\n"
 
 	fi
+}
+
+# PS1 builder function so newlines can be added as needed
+# And not controlled by command substitutions
+build_ps1_start() {
+
+	# Print the execution time if necessary
+	show_formatted_time
 
 	# Build the date line
 	time_date="${COLOURS_ECHO[7]}${COLOURS_ECHO[$TIME_DATE_COLOUR]}$(date +"%Y/%m/%d")${COLOURS_ECHO[10]}"
@@ -308,34 +312,30 @@ BASH_VERSION="${COLOURS[7]}[${COLOURS[10]}\V${COLOURS[7]}]${COLOURS[10]}"
 INFORMATION_LINE="$POWER_COMBO $DIRECTORY_TAB\$(maybe_git)\$(nix_check)$BASH_SYMBOL_BOLD"
 
 # Build the line in which the command will be executed
-COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLOURS[7]}>${COLOURS[10]} "
+# Also use arithmetic expansion to set variable while getting the arrow symbol needed
+COMMAND_LINE="$BASH_SYMBOL_BOLD ${COLOURS[7]}\${ARROW_SYMBOL:TIME_CALC=0}${COLOURS[10]} "
 
 # Command line for PS2
-COMMAND_LINE_PS2="${COLOURS[7]}  >${COLOURS[10]} "
+COMMAND_LINE_PS2="${COLOURS[7]}  $ARROW_SYMBOL${COLOURS[10]} "
 
 # Set the title
-SET_TITLE="${HIDERS[0]}${TITLE_DELIMITERS[0]}[\h] $BASH_SYMBOL \w${TITLE_DELIMITERS[1]}${HIDERS[1]}"
+SET_INFORMATION="${HIDERS[0]}${TITLE_DELIMITERS[0]}[\h] $BASH_SYMBOL \w${TITLE_DELIMITERS[1]}${HIDERS[1]}"
 # TODO add subtitle as path on gnome-console
 
 # }}}
 # {{{ Final Assignments
 
-# Add time counter to PS0
-PS0="\$(start_time_ps ""$ROOT_PID"")"
+# Run before a command is executed
+PS0="\${PS1:\$((START_TIME=\"\$(date ${DATE_STRING})\", TIME_CALC=1, 0)):0}"
 
-# the save the success code
-PROMPT_COMMAND="SUCCESS_CODES=(\"\${PIPESTATUS[@]}\")"
+# Run after command is executed
+PROMPT_COMMAND="SUCCESS_CODES=(\"\${PIPESTATUS[@]}\");EXIT_TIME=\"\$(date ${DATE_STRING})\""
 
 # Final PS1 assignment
-PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE$SET_TITLE"
+PS1="\$(build_ps1_start)\n$INFORMATION_LINE\n$COMMAND_LINE$SET_INFORMATION"
 
 # Assign PS2 as well while we're at it
 PS2="$COMMAND_LINE_PS2"
 
-# Cleanup files on SHM
-function run_on_exit () {
-	[ -e "$BASH_ID_FILE_PATH" ] && rm "$BASH_ID_FILE_PATH"
-}
-trap run_on_exit EXIT
 
 # }}}
