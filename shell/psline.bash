@@ -101,9 +101,9 @@ print_success() {
     if [ "$success_now" = "0" ]; then
       colour_now="${COLOURS[$COMMAND_CODE_GOOD_COLOUR]}"
     elif [ "$success_now" -lt "64" ]; then
-      colour_now="${COLOURS[$COMMAND_CODE_WHAT_COLOUR]}"
-    else
       colour_now="${COLOURS[$COMMAND_CODE_BAD_COLOUR]}"
+    else
+      colour_now="${COLOURS[$COMMAND_CODE_WHAT_COLOUR]}"
     fi
 
     # Print error with its colours
