@@ -59,6 +59,9 @@ alias nano='nano -l -E -T4'
 
 # Shortening commands
 
+# Open
+alias x='xdg-open'
+
 # Tmux aliases
 alias na='tmux a'
 alias nat='tmux a -t'
