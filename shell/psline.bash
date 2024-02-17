@@ -35,7 +35,7 @@ TITLE_DELIMITERS=(
 ####################
 
 # Normal naming variable
-SSH_MESSAGE="SSH Connection"
+SSH_MESSAGE="SSH"
 
 # Colors in numbers
 USER_NAME_COLOUR=1
