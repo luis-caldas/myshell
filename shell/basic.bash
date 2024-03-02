@@ -33,6 +33,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 alias cp='cp -i'
 alias mv='mv -i'
+alist rm='rm -i'
 
 # Add colour aliases
 alias ls='ls --group-directories-first --color=auto'
