@@ -67,6 +67,10 @@ alias x='xdg-open'
 alias na='tmux a'
 alias nat='tmux a -t'
 
+# Docker
+alias doc='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}" -a | { sed -u 1q; sort; }'
+alias docp='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}" -a | { sed -u 1q; sort; }'
+
 # Some NixOS aliases
 alias reb='nixos-rebuild boot --option tarball-ttl 0'
 alias rebu='nixos-rebuild boot --upgrade --option tarball-ttl 0'
